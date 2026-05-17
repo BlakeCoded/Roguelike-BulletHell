@@ -84,4 +84,8 @@ public static class UnityExtensions
         transform.position = newPosition;
     }
     #endregion
+
+    #region ComponentExtensions
+    
+    #endregion
 }

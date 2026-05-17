@@ -13,6 +13,7 @@ namespace Player
 
         public void Initialize()
         {
+            IsInitialized = true;
             inputActions = new PlayerControls();
             inputActions.Enable();
         }
@@ -20,7 +21,7 @@ namespace Player
         public void PollPlayerInput()
         {
             MoveInput = inputActions.Player.Move.ReadValue<Vector2>();
-            FirePressed = inputActions.Player.Fire.WasPressedThisFrame();
+            FirePressed = inputActions.Player.Fire.IsPressed();
         }
         
         private void OnDisable()

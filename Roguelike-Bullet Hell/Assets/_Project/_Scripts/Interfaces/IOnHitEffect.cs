@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace Interfaces
 {
-    public interface IMovement
+    public interface IOnHitEffect
     {
-        void Move(Vector2 direction);
+        void OnHit(IDamageable target);
     }
 }

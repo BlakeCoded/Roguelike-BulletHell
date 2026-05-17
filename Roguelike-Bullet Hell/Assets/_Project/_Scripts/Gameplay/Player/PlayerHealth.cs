@@ -19,6 +19,7 @@ namespace Player
 
         public void Initialize()
         {
+            IsInitialized = true;
             isAlive = true;
             currentHealth = maxHealth;
             OnDeath += Die;

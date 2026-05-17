@@ -1,36 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
-using Interface;
+using Interfaces;
+using Player.Stats;
 using UnityEngine;
 
 namespace Player
 {
     public class PlayerController : MonoBehaviour, IDamageable
     {
-        [SerializeField] private PlayerHealth health;
         [SerializeField] private PlayerInput input;
         [SerializeField] private PlayerMovement movement;
+        [SerializeField] private PlayerCombat combat;
 
-        public bool IsInitialized { get; private set; }
+        //[SerializeField] private PlayerHealth health;
+        //[SerializeField] private PlayerStats stats;
 
         private void Awake()
         {
-            health = GetComponent<PlayerHealth>();
-            health.Initialize();
+            //health = GetComponent<PlayerHealth>();
             input = GetComponent<PlayerInput>();
-            input.Initialize();
             movement = GetComponent<PlayerMovement>();
+            combat = GetComponent<PlayerCombat>();
+            //stats = GetComponent<PlayerStats>();
+
+            //health.Initialize();
+            input.Initialize();
             movement.Initialize();
+            combat.Initialize();
         }
 
         private void Update()
         {
             input.PollPlayerInput();
+
+            movement.Move(input.MoveInput);
+
+            if (input.FirePressed)
+            {
+                combat.Attack();
+            }
         }
 
+        // Use for physics based movement
         private void FixedUpdate()
         {
-            movement.Move(input.MoveInput);
+            
         }
 
         void OnDeath()
@@ -40,17 +54,22 @@ namespace Player
 
         private void OnEnable()
         {
-            health.OnDeath += OnDeath;
+            //health.OnDeath += OnDeath;
         }
 
         private void OnDisable()
         {
-            health.OnDeath -= OnDeath;
+            //health.OnDeath -= OnDeath;
         }
 
         public void TakeDamage(float amount)
         {
-            health.TakeDamage(amount);
+            //health.TakeDamage(amount);
+        }
+
+        public void EquipWeapon(WeaponData weapon)
+        {
+            combat.EquipWeapon(weapon);
         }
     }
 }

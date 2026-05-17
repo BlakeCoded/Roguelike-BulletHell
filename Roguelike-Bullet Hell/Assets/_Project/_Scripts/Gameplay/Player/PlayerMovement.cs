@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Interface;
+using Interfaces;
 using UnityEngine;
 
 namespace Player
