@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Interfaces;
 using UnityEngine;
 
-namespace Player
+namespace Project.Player
 {
     public class PlayerMovement : MonoBehaviour, IMovement, IInitializable
     {

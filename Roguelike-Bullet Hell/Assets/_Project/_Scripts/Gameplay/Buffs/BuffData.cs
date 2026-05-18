@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Project.Gameplay.Stats;
 
-namespace Player.Stats
+namespace Project.Gameplay.Buffs
 {
     [CreateAssetMenu(menuName = "Buffs/Buff")]
     public class BuffData : ScriptableObject
     {
         public string BuffName;
 
+        public bool HasDuratiion;
         public float Durration;
 
         public List<StatModifierData> Modifiers;

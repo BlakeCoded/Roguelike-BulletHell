@@ -1,29 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using Interfaces;
-using Player.Stats;
 using UnityEngine;
 
-namespace Player
+namespace Project.Player
 {
-    public class PlayerController : MonoBehaviour, IDamageable
+    public class PlayerController : MonoBehaviour
     {
         [SerializeField] private PlayerInput input;
         [SerializeField] private PlayerMovement movement;
         [SerializeField] private PlayerCombat combat;
 
-        //[SerializeField] private PlayerHealth health;
-        //[SerializeField] private PlayerStats stats;
-
         private void Awake()
         {
-            //health = GetComponent<PlayerHealth>();
             input = GetComponent<PlayerInput>();
             movement = GetComponent<PlayerMovement>();
             combat = GetComponent<PlayerCombat>();
-            //stats = GetComponent<PlayerStats>();
 
-            //health.Initialize();
             input.Initialize();
             movement.Initialize();
             combat.Initialize();
@@ -54,17 +46,12 @@ namespace Player
 
         private void OnEnable()
         {
-            //health.OnDeath += OnDeath;
+            
         }
 
         private void OnDisable()
         {
-            //health.OnDeath -= OnDeath;
-        }
-
-        public void TakeDamage(float amount)
-        {
-            //health.TakeDamage(amount);
+            
         }
 
         public void EquipWeapon(WeaponData weapon)

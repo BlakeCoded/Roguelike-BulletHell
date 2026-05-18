@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
-using Player.Stats;
-using UnityEditor.IMGUI.Controls;
-using Unity.Collections.LowLevel.Unsafe;
 
-namespace Player
+namespace Project.Gameplay.Stats
 {
-    public class PlayerStats : MonoBehaviour, IInitializable
+    public class StatsComponent : MonoBehaviour, IInitializable
     {
         private Dictionary<StatType, Stat> stats;
+
+        [SerializeField] private List<StatDefinition> startingStats = new();
 
         public bool IsInitialized { get; private set; }
 
@@ -22,33 +22,48 @@ namespace Player
         {
             if (IsInitialized) return;
 
-            stats = new Dictionary<StatType, Stat>();
+            stats = new();
 
-            AddStat(StatType.Damage, new Stat(10f, 1f));
-            AddStat(StatType.AttackSpeed, new Stat(1f, 0.1f));
-            AddStat(StatType.MoveSpeed, new Stat(5f, 1f));
-            AddStat(StatType.CritChance, new Stat(0.5f, 0f));
-            AddStat(StatType.CritDamage, new Stat(1.5f, 1f));
-            AddStat(StatType.Health, new Stat(10f, 0f));
-            AddStat(StatType.Armor, new Stat(0f, 0f));
-            AddStat(StatType.Luck, new Stat(1f, 0f));
-            AddStat(StatType.ProjectileCount, new Stat(1f, 1f));
-            AddStat(StatType.ProjectileSpeed, new Stat(10f, 1f));
-            AddStat(StatType.CooldownReduction, new Stat(0f, 0f));
-            AddStat(StatType.AreaSize, new Stat(1f, 1f));
-            AddStat(StatType.KnockBack, new Stat(0f, 0f));
+            foreach (StatDefinition sd in startingStats)
+            {
+                AddStat(sd.Type, new Stat(sd.BaseValue, sd.MinValue));
+            }
 
             IsInitialized = true;
         }
 
         private void AddStat(StatType type, Stat stat)
         {
-            stats.Add(type, stat);
+            if(stats.ContainsKey(type))
+            {
+                Debug.LogWarning($"Duplicate stat {type} on {name}");
+                return; // do not writeover exisiting stat
+            }
+
+            stats[type] = stat;
+        }
+
+        public bool HasStat(StatType type)
+        {
+            return stats.ContainsKey(type);
+        }
+
+        public bool TryGetStatValue(StatType type, out float value)
+        {
+            value = 0f;
+
+            if (stats.TryGetValue(type, out Stat stat))
+            {
+                value = stat.Value;
+                return true;
+            }
+
+            return false;
         }
 
         public void AddStatModifier(StatType type, StatModifier modifier)
         {
-            if(stats.TryGetValue(type, out Stat stat))
+            if (stats.TryGetValue(type, out Stat stat))
             {
                 stat.AddModifier(modifier);
             }
@@ -64,7 +79,7 @@ namespace Player
 
         public void RemoveAllStatModifiers(StatType type, object source)
         {
-            if(stats.TryGetValue(type, out Stat stat) && source is not null)
+            if (stats.TryGetValue(type, out Stat stat) && source is not null)
             {
                 stat.RemoveAllFromSource(source);
             }
@@ -72,7 +87,7 @@ namespace Player
 
         public float GetStatValue(StatType type)
         {
-            if(stats.TryGetValue(type, out Stat stat))
+            if (stats.TryGetValue(type, out Stat stat))
             {
                 return stat.Value;
             }

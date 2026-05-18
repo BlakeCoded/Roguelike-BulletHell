@@ -523,8 +523,8 @@ GameObject:
   - component: {fileID: 1122910084}
   - component: {fileID: 1122910085}
   - component: {fileID: 1122910086}
-  - component: {fileID: 1122910087}
   - component: {fileID: 1122910088}
+  - component: {fileID: 1122910089}
   m_Layer: 0
   m_Name: PlayerHolder
   m_TagString: Untagged
@@ -615,18 +615,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPosition: {fileID: 1996573962}
   defaultWeapon: {fileID: 11400000, guid: 59f8eb8c304d9e94eac7241b0a38d2df, type: 2}
---- !u!114 &1122910087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1122910080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b8ca7090a0a38548921c500b9b52a77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1122910088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -639,6 +627,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 215484747af54d441a81827955621f0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1122910089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1122910080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05f956e5da9102e40b24dc60d3b00eb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingStats:
+  - Type: 0
+    BaseValue: 10
+    MinValue: 1
+  - Type: 1
+    BaseValue: 1
+    MinValue: 0.1
+  - Type: 2
+    BaseValue: 10
+    MinValue: 5
+  - Type: 3
+    BaseValue: 0.5
+    MinValue: 0
+  - Type: 4
+    BaseValue: 1.5
+    MinValue: 1
+  - Type: 5
+    BaseValue: 100
+    MinValue: 0
+  - Type: 6
+    BaseValue: 5
+    MinValue: 0
+  - Type: 7
+    BaseValue: 1
+    MinValue: 0
+  - Type: 8
+    BaseValue: 1
+    MinValue: 1
+  - Type: 9
+    BaseValue: 10
+    MinValue: 1
+  - Type: 10
+    BaseValue: 0
+    MinValue: 0
+  - Type: 11
+    BaseValue: 1
+    MinValue: 0.1
+  - Type: 12
+    BaseValue: 1
+    MinValue: 0
 --- !u!1 &1963637233
 GameObject:
   m_ObjectHideFlags: 0
@@ -854,7 +894,7 @@ GameObject:
   - component: {fileID: 2023100258}
   - component: {fileID: 2023100257}
   m_Layer: 0
-  m_Name: IncreaseDamage
+  m_Name: StatTester
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -872,7 +912,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9871925699a77534abb7395c667c8c13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
 --- !u!65 &2023100258
 BoxCollider:
   m_ObjectHideFlags: 0

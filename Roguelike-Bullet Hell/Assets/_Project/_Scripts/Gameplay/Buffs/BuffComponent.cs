@@ -1,19 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Player.Stats;
+using Project.Gameplay.Stats;
 
-namespace Player
+namespace Project.Gameplay.Buffs
 {
-    public class PlayerBuffs : MonoBehaviour
+    [RequireComponent(typeof(StatsComponent))]
+    public class BuffComponent : MonoBehaviour
     {
         private List<BuffInstance> activeBuffs = new();
 
-        private PlayerStats stats;
+        private StatsComponent stats;
 
         private void Awake()
         {
-            stats = GetComponent<PlayerStats>();
+            stats = GetComponent<StatsComponent>();
         }
 
         public void AddBuff(BuffData buff)
@@ -24,7 +25,7 @@ namespace Player
 
             foreach (StatModifierData mod in buff.Modifiers)
             {
-                stats.AddStatModifier(mod.StatType, new StatModifier(mod.Value, mod.ModifierType, buffInstance));
+                stats.AddStatModifier(mod.StatType, new StatModifier(mod.ModifierType, mod.Value, buffInstance));
             }
         }
 
@@ -41,6 +42,8 @@ namespace Player
             for (int i = activeBuffs.Count - 1; i >= 0; i--)
             {
                 BuffInstance buff = activeBuffs[i];
+
+                if(buff.HasDuration == false) continue;
 
                 buff.RemainingDuration -= Time.deltaTime;
 

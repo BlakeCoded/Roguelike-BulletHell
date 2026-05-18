@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Player
+namespace Project.Gameplay.Health
 {
-    public class PlayerHealth : MonoBehaviour, IInitializable
+    public class HealthComponent : MonoBehaviour, IInitializable
     {
         public float CurrentHealth => currentHealth;
         private float currentHealth;
@@ -41,8 +41,6 @@ namespace Player
         {
             OnDeath?.Invoke();
         }
-
-       
 
         private void OnDisable()
         {

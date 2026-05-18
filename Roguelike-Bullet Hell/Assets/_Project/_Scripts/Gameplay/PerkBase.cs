@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Player.Stats;
-using Player;
+using Project.Gameplay.Stats;
 
 public class PerkBase : MonoBehaviour
 {
@@ -10,7 +9,7 @@ public class PerkBase : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        PlayerStats stats = other.GetComponentInParent<PlayerStats>();
+        StatsComponent stats = other.GetComponentInParent<StatsComponent>();
 
         if(stats != null)
         {

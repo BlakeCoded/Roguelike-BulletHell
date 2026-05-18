@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Player;
+using Project.Player;
 using UnityEngine;
 
 public abstract class WeaponBehaviour : MonoBehaviour

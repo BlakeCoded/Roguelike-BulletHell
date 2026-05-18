@@ -2,19 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Player.Stats
+namespace Project.Gameplay.Buffs
 {
     public class BuffInstance
     {
         public BuffData Data;
-
+        
         public float RemainingDuration;
+
+        public bool HasDuration;
 
         public BuffInstance(BuffData data)
         {
             Data = data;
 
             RemainingDuration = data.Durration;
+
+            HasDuration = data.HasDuratiion;
         }
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Player.Stats
+namespace Project.Gameplay.Stats
 {
     [System.Serializable]
     public class Stat
@@ -35,6 +35,8 @@ namespace Player.Stats
 
             float percentAdd = 0f;
 
+            float multiplier = 1f;
+
             foreach (StatModifier modifier in modifiers)
             {
                 switch (modifier.Type)
@@ -43,13 +45,20 @@ namespace Player.Stats
                         value += modifier.Value;
                         break;
 
-                    case StatModifierType.AddativePercent:
+                    case StatModifierType.AdditivePercent:
                         percentAdd += modifier.Value;
                         break;
+
+                    case StatModifierType.Multiplyer:
+                        multiplier += modifier.Value;
+                        break;
+
                 }
             }
 
             value *= 1 + percentAdd;
+
+            value *= multiplier;
 
             totalValue = Mathf.Max(minValue, value);
 
