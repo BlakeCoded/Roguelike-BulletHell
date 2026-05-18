@@ -1,21 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using Project.Gameplay.Stats;
 using UnityEngine;
 
 namespace Project.Player
 {
-    public class PlayerCombat : MonoBehaviour, IInitializable
+    [RequireComponent(typeof(StatsComponent))]
+    public class PlayerCombat : MonoBehaviour
     {
         [SerializeField] private Transform weaponPosition;
+        [SerializeField] private Transform prjectileSpawnPosition;
         [SerializeField] private WeaponData defaultWeapon;
 
         private WeaponBehaviour currentWeapon;
+        private StatsComponent stats;
 
-        public bool IsInitialized { get; private set; }
-
-        public void Initialize()
+        private void Awake()
         {
-            IsInitialized = true;
+            stats = GetComponent<StatsComponent>();
+
             EquipWeapon(defaultWeapon);
         }
 
@@ -26,9 +29,9 @@ namespace Project.Player
                 Destroy(currentWeapon.gameObject);
             }
 
-            currentWeapon = Instantiate(weaponData.behaviourPrefab, weaponPosition);
+            currentWeapon = Instantiate(weaponData.BehaviourPrefab, weaponPosition);
 
-            currentWeapon.Initialize(this, weaponData);
+            currentWeapon.Initialize(weaponData, stats, prjectileSpawnPosition);
         }
 
         public void Attack()

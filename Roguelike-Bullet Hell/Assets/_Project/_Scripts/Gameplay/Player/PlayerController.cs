@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Project.Gameplay.Health;
 using UnityEngine;
 
 namespace Project.Player
@@ -10,15 +11,14 @@ namespace Project.Player
         [SerializeField] private PlayerMovement movement;
         [SerializeField] private PlayerCombat combat;
 
+        private HealthComponent health;
+
         private void Awake()
         {
             input = GetComponent<PlayerInput>();
             movement = GetComponent<PlayerMovement>();
             combat = GetComponent<PlayerCombat>();
-
-            input.Initialize();
-            movement.Initialize();
-            combat.Initialize();
+            health = GetComponent<HealthComponent>();
         }
 
         private void Update()
@@ -46,17 +46,12 @@ namespace Project.Player
 
         private void OnEnable()
         {
-            
+            health.OnDeath += OnDeath;
         }
 
         private void OnDisable()
         {
-            
-        }
-
-        public void EquipWeapon(WeaponData weapon)
-        {
-            combat.EquipWeapon(weapon);
+            health.OnDeath -= OnDeath;
         }
     }
 }

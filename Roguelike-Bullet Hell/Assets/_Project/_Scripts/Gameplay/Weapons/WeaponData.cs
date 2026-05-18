@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Weapons/weapon")]
+[CreateAssetMenu(menuName = "Weapons/Weapon Data")]
 public class WeaponData : ScriptableObject
 {
-    public string weaponName;
-
-    public float damage;
-    public float cooldown;
-
-    public WeaponBehaviour behaviourPrefab;
+    public string WeaponName;
+    public float BaseDamage;
+    public float BaseAttackSpeed;
+    public int BaseProjectileCount;
+    public WeaponBehaviour BehaviourPrefab;
 }

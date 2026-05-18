@@ -4,16 +4,14 @@ using UnityEngine;
 
 namespace Project.Player
 {
-    public class PlayerInput : MonoBehaviour, IInitializable
+    public class PlayerInput : MonoBehaviour
     {
         private PlayerControls inputActions;
         public Vector2 MoveInput {  get; private set; }
         public bool FirePressed { get; private set; }
-        public bool IsInitialized { get; private set; }
 
-        public void Initialize()
+        private void Awake()
         {
-            IsInitialized = true;
             inputActions = new PlayerControls();
             inputActions.Enable();
         }

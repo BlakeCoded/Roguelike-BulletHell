@@ -1,33 +1,39 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Interfaces;
+using Project.Gameplay.Stats;
 using UnityEngine;
 
 namespace Project.Gameplay.Health
 {
-    public class HealthComponent : MonoBehaviour, IInitializable
+    [RequireComponent(typeof(StatsComponent))]
+    public class HealthComponent : MonoBehaviour, IDamageable
     {
         public float CurrentHealth => currentHealth;
         private float currentHealth;
-        public float MaxHealth => maxHealth;
-        [SerializeField] private float maxHealth;
+        public float MaxHealth => stats.GetStatValue(StatType.Health);
         public bool IsAlive => isAlive;
-        public bool IsInitialized { get; private set; }
         private bool isAlive;
 
         public Action OnDeath;
 
-        public void Initialize()
+        private StatsComponent stats;
+
+        private void Awake()
         {
-            IsInitialized = true;
+            stats = GetComponent<StatsComponent>();
+        }
+
+        private void Start()
+        {
             isAlive = true;
-            currentHealth = maxHealth;
-            OnDeath += Die;
+            currentHealth = MaxHealth;
         }
 
         public void TakeDamage(float amount)
         {
-            if (!isAlive) return;
+            if (!IsAlive) return;
 
             currentHealth -= amount;
 
@@ -37,14 +43,20 @@ namespace Project.Gameplay.Health
             }
         }
 
-        void Die()
+        public void Heal(float amount)
         {
-            OnDeath?.Invoke();
+            if(!IsAlive) return;
+
+            currentHealth += amount;
+
+            currentHealth = Mathf.Min(currentHealth, MaxHealth);
         }
 
-        private void OnDisable()
+        void Die()
         {
-            OnDeath -= Die;
+            isAlive = false;
+
+            OnDeath?.Invoke();
         }
     }
 }

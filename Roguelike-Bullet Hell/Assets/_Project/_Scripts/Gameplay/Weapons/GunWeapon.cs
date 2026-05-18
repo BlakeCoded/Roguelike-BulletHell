@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class GunWeapon : WeaponBehaviour
 {
-    [SerializeField] private Transform firePoint;
-
     protected override void OnUse()
     {
         Ray ray = new Ray(firePoint.position, firePoint.forward);
@@ -15,7 +13,7 @@ public class GunWeapon : WeaponBehaviour
         {
             if(hit.collider.TryGetComponent(out IDamageable target))
             {
-                target.TakeDamage(data.damage);
+                target.TakeDamage(Damage);
             }
         }
     }

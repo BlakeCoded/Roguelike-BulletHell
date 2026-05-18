@@ -5,9 +5,9 @@ using UnityEngine;
 
 public abstract class ProjectileBase : MonoBehaviour, IProjectile
 {
-    [field: SerializeField] public float Damage { get; private set; }
-    [field: SerializeField] public float MoveSpeed {  get; private set; } 
-    [field: SerializeField] public float Lifetime { get; private set; }
+    public float Damage { get; private set; }
+    public float MoveSpeed {  get; private set; } 
+    public float Lifetime { get; private set; }
 
     protected float timer;
 
@@ -18,9 +18,9 @@ public abstract class ProjectileBase : MonoBehaviour, IProjectile
         Lifetime = lifeTime;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
-        transform.MoveByXZ(Vector2.up * MoveSpeed * Time.deltaTime);
+        HandleMovement();
 
         timer += Time.deltaTime;
         
@@ -30,6 +30,9 @@ public abstract class ProjectileBase : MonoBehaviour, IProjectile
         }
     }
 
+    protected abstract void HandleMovement();
+
+    // Add layers etc to only interact with, WORLD, ENVIRONMENT, ENEMY
     private void OnTriggerEnter(Collider other)
     {
         if(other.TryGetComponent<IDamageable>(out IDamageable target))
