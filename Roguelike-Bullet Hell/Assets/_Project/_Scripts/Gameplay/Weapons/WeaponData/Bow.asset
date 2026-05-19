@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87bd7395e66467a439dd58ba0db39c8c, type: 3}
   m_Name: Bow
   m_EditorClassIdentifier: 
-  weaponName: DefaultBow
-  damage: 30
-  cooldown: 0.5
-  behaviourPrefab: {fileID: 4561443180814416051, guid: 9a290cbb3629ba043b8a433630f2b7fb,
+  WeaponName: Bow
+  BaseDamage: 15
+  BaseAttackSpeed: 1
+  BaseProjectileCount: 1
+  BehaviourPrefab: {fileID: 4561443180814416051, guid: 9a290cbb3629ba043b8a433630f2b7fb,
     type: 3}

@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using Interfaces;
 using Project.Gameplay.Stats;
 using UnityEngine;
+using static Helper;
 
 namespace Project.Player
 {
     public class PlayerMovement : MonoBehaviour, IMovement
     {
+        [SerializeField] Transform playerBody;
+
         public bool CanMove { get; set; }
 
         private StatsComponent stats;
@@ -24,6 +27,30 @@ namespace Project.Player
             if (CanMove == false || direction == Vector2.zero) return;
 
             transform.MoveByXZ(direction * stats.GetStatValue(StatType.MoveSpeed) * Time.deltaTime);
+
+
+        }
+
+        public void RotateToMousePosition(Vector2 position)
+        {
+            Ray ray = MainCamera.ScreenPointToRay(position);
+
+            Plane groundPlane = new Plane(Vector3.up, playerBody.position);
+
+            if(groundPlane.Raycast(ray, out float distance))
+            {
+                Vector3 worldPoint = ray.GetPoint(distance);
+
+                Vector3 direction = worldPoint - playerBody.position;
+
+                direction.y = 0;
+
+                if (direction.sqrMagnitude < 0.0001f) return;
+
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+                playerBody.rotation = targetRotation;
+            }
         }
     }
 }

@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Project.Gameplay.Combat;
 using Project.Gameplay.Health;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Project.Player
 {
@@ -9,7 +11,7 @@ namespace Project.Player
     {
         [SerializeField] private PlayerInput input;
         [SerializeField] private PlayerMovement movement;
-        [SerializeField] private PlayerCombat combat;
+        [SerializeField] private WeaponComponent combat;
 
         private HealthComponent health;
 
@@ -17,7 +19,7 @@ namespace Project.Player
         {
             input = GetComponent<PlayerInput>();
             movement = GetComponent<PlayerMovement>();
-            combat = GetComponent<PlayerCombat>();
+            combat = GetComponent<WeaponComponent>();
             health = GetComponent<HealthComponent>();
         }
 
@@ -26,6 +28,7 @@ namespace Project.Player
             input.PollPlayerInput();
 
             movement.Move(input.MoveInput);
+            movement.RotateToMousePosition(input.MousePosition);
 
             if (input.FirePressed)
             {

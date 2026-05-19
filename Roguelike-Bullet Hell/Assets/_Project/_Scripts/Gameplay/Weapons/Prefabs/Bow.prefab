@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 852432903568202391}
   - component: {fileID: 4561443180814416051}
+  - component: {fileID: 2696594101260239064}
   m_Layer: 0
   m_Name: Bow
   m_TagString: Untagged
@@ -44,5 +45,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96df97a2cb4f36b4398fc872f995bebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 8203019755068086709, guid: 819aaab021e39e54bab0b0dcdc9a4b6b,
+  projectilePrefab: {fileID: 2892021443560827102, guid: 819aaab021e39e54bab0b0dcdc9a4b6b,
     type: 3}
+  baseProjectileSpeed: 10
+  baseLifeTime: 5
+--- !u!114 &2696594101260239064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4274785347447206053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05f956e5da9102e40b24dc60d3b00eb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingStats:
+  - Type: 0
+    BaseValue: 5
+    MinValue: 1

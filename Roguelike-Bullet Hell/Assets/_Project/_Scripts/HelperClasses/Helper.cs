@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public static class Helper
 {
     private static Camera _camera;
-    public static Camera Camera
+    public static Camera MainCamera
     {
         get
         {
@@ -36,7 +36,7 @@ public static class Helper
 
     public static Vector2 GetWorldPositionOfCanvasElement(RectTransform element)
     {
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(element, element.position, Camera, out var result);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(element, element.position, MainCamera, out var result);
         return result;
     }
 }

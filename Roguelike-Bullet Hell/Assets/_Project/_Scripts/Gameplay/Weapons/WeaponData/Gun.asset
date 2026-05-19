@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87bd7395e66467a439dd58ba0db39c8c, type: 3}
   m_Name: Gun
   m_EditorClassIdentifier: 
-  weaponName: DefaultGun
-  damage: 10
-  cooldown: 0.05
-  behaviourPrefab: {fileID: 1511942705516122535, guid: 67a63e409074a1c418a68f099fdbc528,
+  WeaponName: Gun
+  BaseDamage: 5
+  BaseAttackSpeed: 2
+  BaseProjectileCount: 1
+  BehaviourPrefab: {fileID: 1511942705516122535, guid: 67a63e409074a1c418a68f099fdbc528,
     type: 3}

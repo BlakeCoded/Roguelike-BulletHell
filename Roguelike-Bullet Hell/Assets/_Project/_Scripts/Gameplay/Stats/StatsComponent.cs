@@ -96,5 +96,10 @@ namespace Project.Gameplay.Stats
 
             return 0f;
         }
+
+        public void SetBaseStat(StatType type, float value)
+        {
+            stats[type].SetBaseValue(value);
+        }
     }
 }

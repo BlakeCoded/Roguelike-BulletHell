@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using Project.Gameplay.Stats;
 using UnityEngine;
 
-namespace Project.Player
+namespace Project.Gameplay.Combat
 {
     [RequireComponent(typeof(StatsComponent))]
-    public class PlayerCombat : MonoBehaviour
+    public class WeaponComponent : MonoBehaviour
     {
         [SerializeField] private Transform weaponPosition;
-        [SerializeField] private Transform prjectileSpawnPosition;
-        [SerializeField] private WeaponData defaultWeapon;
+        [SerializeField] private Transform WeaponFirePosition;
+        [SerializeField] private WeaponData weaponData;
 
         private WeaponBehaviour currentWeapon;
         private StatsComponent stats;
@@ -19,19 +19,19 @@ namespace Project.Player
         {
             stats = GetComponent<StatsComponent>();
 
-            //EquipWeapon(defaultWeapon);
+            EquipWeapon(weaponData);
         }
 
-        public void EquipWeapon(WeaponData weaponData)
+        public void EquipWeapon(WeaponData data)
         {
-            if(currentWeapon.gameObject != null)
+            if(currentWeapon is not null)
             {
                 Destroy(currentWeapon.gameObject);
             }
 
-            currentWeapon = Instantiate(weaponData.BehaviourPrefab, weaponPosition);
+            currentWeapon = Instantiate(data.BehaviourPrefab, weaponPosition);
 
-            currentWeapon.Initialize(weaponData, stats, prjectileSpawnPosition);
+            currentWeapon.Initialize(data, stats, WeaponFirePosition);
         }
 
         public void Attack()

@@ -91,5 +91,10 @@ namespace Project.Gameplay.Stats
 
             isDirty = true;
         }
+
+        public void SetBaseValue(float value)
+        {
+            baseValue = value;
+        }
     }
 }

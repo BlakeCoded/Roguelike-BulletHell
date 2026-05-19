@@ -13,7 +13,7 @@ public class PerkBase : MonoBehaviour
 
         if(stats != null)
         {
-            Debug.Log(stats.GetStatValue(type));
+            Debug.Log($"{type}" + stats.GetStatValue(type));
         }
     }
 }
