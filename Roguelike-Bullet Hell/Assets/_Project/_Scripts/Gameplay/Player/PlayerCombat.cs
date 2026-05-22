@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Project.Gameplay.Stats;
 using UnityEngine;
 
-namespace Project.Player
+namespace Project.Gameplay.Combat
 {
     [RequireComponent(typeof(StatsComponent))]
     public class PlayerCombat : MonoBehaviour
@@ -24,7 +24,7 @@ namespace Project.Player
 
         public void EquipWeapon(WeaponData weaponData)
         {
-            if(currentWeapon.gameObject != null)
+            if (currentWeapon.gameObject != null)
             {
                 Destroy(currentWeapon.gameObject);
             }

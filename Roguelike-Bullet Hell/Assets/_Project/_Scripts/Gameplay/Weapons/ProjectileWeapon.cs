@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Project.Gameplay.Stats;
 using UnityEngine;
+using Project.Gameplay.Pooling;
+using Project.Gameplay.Combat;
 
 public class ProjectileWeapon : WeaponBehaviour
 {
@@ -11,16 +13,12 @@ public class ProjectileWeapon : WeaponBehaviour
 
     [SerializeField] private float baseLifeTime;
 
-    protected float ProjectileSpeed => baseProjectileSpeed + playerStats.GetStatValue(StatType.ProjectileSpeed);
-
-    protected override void OnUse()
+    protected override void OnUse(AttackContext attackContext)
     {
-        Debug.Log("Spawning projectile");
+        attackContext.LifeTime = baseLifeTime;
 
-        // projectile count and position etc
+        ProjectileBase projectile = PoolManager.Instance.Get(projectilePrefab, firePoint.position, firePoint.rotation);
 
-        ProjectileBase projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-
-        projectile.Initialize(Damage, ProjectileSpeed, baseLifeTime);
+        projectile.Initialize(attackContext);
     }
 }

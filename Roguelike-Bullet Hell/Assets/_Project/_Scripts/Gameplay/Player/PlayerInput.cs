@@ -23,6 +23,8 @@ namespace Project.Player
             MousePosition = inputActions.Player.MousePosition.ReadValue<Vector2>();
             MoveInput = inputActions.Player.Move.ReadValue<Vector2>();
             FirePressed = inputActions.Player.Fire.IsPressed();
+
+            //Debug.Log(inputActions.Player.Move.activeControl);
         }
         
         private void OnDisable()

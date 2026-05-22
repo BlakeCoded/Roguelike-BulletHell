@@ -6,10 +6,10 @@ using UnityEngine;
 namespace Project.Gameplay.Combat
 {
     [RequireComponent(typeof(StatsComponent))]
-    public class WeaponComponent : MonoBehaviour
+    public class PlayerWeapons : MonoBehaviour
     {
         [SerializeField] private Transform weaponPosition;
-        [SerializeField] private Transform WeaponFirePosition;
+        [SerializeField] private Transform weaponFirePoint;
         [SerializeField] private WeaponData weaponData;
 
         private WeaponBehaviour currentWeapon;
@@ -31,7 +31,7 @@ namespace Project.Gameplay.Combat
 
             currentWeapon = Instantiate(data.BehaviourPrefab, weaponPosition);
 
-            currentWeapon.Initialize(data, stats, WeaponFirePosition);
+            currentWeapon.Initialize(data, stats, weaponFirePoint);
         }
 
         public void Attack()

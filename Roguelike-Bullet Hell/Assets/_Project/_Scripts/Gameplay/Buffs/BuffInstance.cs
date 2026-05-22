@@ -10,15 +10,11 @@ namespace Project.Gameplay.Buffs
         
         public float RemainingDuration;
 
-        public bool HasDuration;
-
         public BuffInstance(BuffData data)
         {
             Data = data;
 
             RemainingDuration = data.Durration;
-
-            HasDuration = data.HasDuratiion;
         }
     }
 }

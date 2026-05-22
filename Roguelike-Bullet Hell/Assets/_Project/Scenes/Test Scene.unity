@@ -339,7 +339,7 @@ GameObject:
   m_Component:
   - component: {fileID: 254299272}
   m_Layer: 0
-  m_Name: WeaponFirePosition
+  m_Name: WeaponFirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -707,13 +707,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1122910083}
   - component: {fileID: 1122910082}
-  - component: {fileID: 1122910081}
   - component: {fileID: 1122910084}
   - component: {fileID: 1122910085}
-  - component: {fileID: 1122910086}
+  - component: {fileID: 1122910090}
+  - component: {fileID: 1122910081}
   - component: {fileID: 1122910088}
   - component: {fileID: 1122910089}
-  - component: {fileID: 1122910090}
+  - component: {fileID: 1122910091}
   m_Layer: 0
   m_Name: PlayerHolder
   m_TagString: Untagged
@@ -733,6 +733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b91af10d62a0162489c5276abb7b42b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseMaxHealth: 100
 --- !u!114 &1122910082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -790,21 +791,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerBody: {fileID: 634818673}
---- !u!114 &1122910086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1122910080}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 148eea512665db741ae75240235afe46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponPosition: {fileID: 1996573962}
-  prjectileSpawnPosition: {fileID: 254299272}
-  defaultWeapon: {fileID: 11400000, guid: 59f8eb8c304d9e94eac7241b0a38d2df, type: 2}
+  baseMoveSpeed: 5
 --- !u!114 &1122910088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -829,46 +816,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05f956e5da9102e40b24dc60d3b00eb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingStats:
-  - Type: 0
-    BaseValue: 5
-    MinValue: 1
-  - Type: 1
-    BaseValue: 1
-    MinValue: 0.1
-  - Type: 2
-    BaseValue: 5
-    MinValue: 0.1
-  - Type: 3
-    BaseValue: 0.5
-    MinValue: 0
-  - Type: 4
-    BaseValue: 1.5
-    MinValue: 1
-  - Type: 5
-    BaseValue: 100
-    MinValue: 0
-  - Type: 6
-    BaseValue: 5
-    MinValue: 0
-  - Type: 7
-    BaseValue: 1
-    MinValue: 0
-  - Type: 8
-    BaseValue: 1
-    MinValue: 1
-  - Type: 9
-    BaseValue: 10
-    MinValue: 1
-  - Type: 10
-    BaseValue: 0
-    MinValue: 0
-  - Type: 11
-    BaseValue: 1
-    MinValue: 0.1
-  - Type: 12
-    BaseValue: 1
-    MinValue: 0
 --- !u!114 &1122910090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -882,8 +829,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponPosition: {fileID: 1996573962}
-  WeaponFirePosition: {fileID: 254299272}
+  weaponFirePoint: {fileID: 254299272}
   weaponData: {fileID: 11400000, guid: e3b4963063c569f4e96958bfe9be1889, type: 2}
+--- !u!114 &1122910091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1122910080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f2ac4cfff7dbd2489bf36f0426b00a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingStats:
+  - Type: 0
+    BaseValue: 5
+  - Type: 1
+    BaseValue: 1
+  - Type: 2
+    BaseValue: 5
+  - Type: 3
+    BaseValue: 0.5
+  - Type: 4
+    BaseValue: 1.5
+  - Type: 5
+    BaseValue: 100
+  - Type: 6
+    BaseValue: 5
+  - Type: 7
+    BaseValue: 1
+  - Type: 8
+    BaseValue: 1
+  - Type: 9
+    BaseValue: 10
+  - Type: 10
+    BaseValue: 0
+  - Type: 11
+    BaseValue: 1
+  - Type: 12
+    BaseValue: 1
 --- !u!1 &1260019797
 GameObject:
   m_ObjectHideFlags: 0
@@ -893,6 +879,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1260019798}
+  - component: {fileID: 1260019799}
   m_Layer: 0
   m_Name: --Managers--
   m_TagString: Untagged
@@ -915,6 +902,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1260019799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260019797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dec3dbd6297b30429bc0c4c7201e563, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectsToPreInitialize:
+  - {fileID: 8203019755068086709, guid: 819aaab021e39e54bab0b0dcdc9a4b6b, type: 3}
 --- !u!1 &1429771075
 GameObject:
   m_ObjectHideFlags: 0
@@ -1206,7 +1207,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 90
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -1346,7 +1347,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9871925699a77534abb7395c667c8c13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
+  modifier:
+    StatType: 1
+    Value: -1
+    ModifierType: 0
+  buffs:
+  - {fileID: 11400000, guid: c01ffe13fad2c0f4dab6677028ed2191, type: 2}
+  - {fileID: 11400000, guid: 173cfd44050e4654fa621c672028553a, type: 2}
 --- !u!65 &2023100258
 BoxCollider:
   m_ObjectHideFlags: 0

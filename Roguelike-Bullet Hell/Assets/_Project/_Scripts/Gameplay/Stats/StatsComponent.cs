@@ -2,35 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
+using Interfaces;
+using System.ComponentModel;
 
 namespace Project.Gameplay.Stats
 {
-    public class StatsComponent : MonoBehaviour, IInitializable
+    public class StatsComponent : MonoBehaviour
     {
-        private Dictionary<StatType, Stat> stats;
-
-        [SerializeField] private List<StatDefinition> startingStats = new();
-
-        public bool IsInitialized { get; private set; }
-
-        private void Awake()
-        {
-            Initialize();
-        }
-
-        public void Initialize()
-        {
-            if (IsInitialized) return;
-
-            stats = new();
-
-            foreach (StatDefinition sd in startingStats)
-            {
-                AddStat(sd.Type, new Stat(sd.BaseValue, sd.MinValue));
-            }
-
-            IsInitialized = true;
-        }
+        private Dictionary<StatType, Stat> stats = new();
 
         private void AddStat(StatType type, Stat stat)
         {
@@ -97,9 +76,27 @@ namespace Project.Gameplay.Stats
             return 0f;
         }
 
-        public void SetBaseStat(StatType type, float value)
+        public void SetBaseStat(StatType type, float value = 0f)
         {
+            if(!stats.TryGetValue(type, out Stat stat))
+            {
+                stat = new Stat(value);
+                stats[type] = stat;
+                return;
+            }
+
             stats[type].SetBaseValue(value);
+        }
+
+        private Stat GetOrCreateStat(StatType type, float defaultValue = 0f)
+        {
+            if(!stats.TryGetValue(type, out Stat stat))
+            {
+                stat = new Stat(defaultValue);
+                stats[type] = stat;
+            }
+
+            return stat;
         }
     }
 }

@@ -65,19 +65,15 @@ public static class UnityExtensions
     }
     public static void MoveBy(this Transform transform, float x = 0, float y = 0, float z = 0)
     {
-        transform.position = transform.position.Add(x, y, z);
+        transform.position += new Vector3(x, y, z);
     }
     public static void MoveBy(this Transform transform, Vector3 vector)
     {
-        transform.position = transform.position.Add(vector);
+        transform.position += vector;
     }
-    public static void MoveByX(this Transform transform, Vector2 vector)
+    public static void MoveByXZ(this Transform transform, Vector3 vector)
     {
-        transform.position = transform.position += new Vector3(vector.x, 0, 0);
-    }
-    public static void MoveByXZ(this Transform transform, Vector2 vector)
-    {
-        transform.position = transform.position += new Vector3(vector.x, 0, vector.y);
+        transform.position += new Vector3(vector.x, 0, vector.y);
     }
     public static void MoveTo(this Transform  transform, Vector3 newPosition)
     {

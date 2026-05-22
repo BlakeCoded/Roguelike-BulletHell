@@ -10,7 +10,8 @@ namespace Project.Player
     public class PlayerMovement : MonoBehaviour, IMovement
     {
         [SerializeField] Transform playerBody;
-
+        [SerializeField] float baseMoveSpeed = 5;
+        private float MoveSpeed => baseMoveSpeed + stats.GetStatValue(StatType.MoveSpeed);
         public bool CanMove { get; set; }
 
         private StatsComponent stats;
@@ -18,7 +19,10 @@ namespace Project.Player
         private void Awake()
         {
             stats = GetComponent<StatsComponent>();
+        }
 
+        private void Start()
+        {
             CanMove = true;
         }
 
@@ -26,9 +30,7 @@ namespace Project.Player
         {
             if (CanMove == false || direction == Vector2.zero) return;
 
-            transform.MoveByXZ(direction * stats.GetStatValue(StatType.MoveSpeed) * Time.deltaTime);
-
-
+            transform.MoveByXZ(MoveSpeed * Time.deltaTime * direction);
         }
 
         public void RotateToMousePosition(Vector2 position)

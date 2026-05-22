@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: MoveSpeed
   m_EditorClassIdentifier: 
   BuffName: Sprint
-  HasDuratiion: 1
   Durration: 15
   Modifiers:
   - StatType: 2
-    Value: 15
+    Value: 0.15
     ModifierType: 1

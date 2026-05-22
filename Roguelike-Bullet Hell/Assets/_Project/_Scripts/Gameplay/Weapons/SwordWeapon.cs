@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SwordWeapon : WeaponBehaviour
+namespace Project.Gameplay.Combat
 {
-    protected override void OnUse()
+    public class SwordWeapon : WeaponBehaviour
     {
-        Debug.Log("Swing Sword");
+        protected override void OnUse(AttackContext attackContext)
+        {
+            Debug.Log("Swing Sword");
 
-        // melee overlap check
+            // melee overlap check
+        }
     }
 }

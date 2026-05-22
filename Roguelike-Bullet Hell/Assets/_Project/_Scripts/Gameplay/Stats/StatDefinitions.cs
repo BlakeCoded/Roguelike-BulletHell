@@ -12,14 +12,14 @@ namespace Project.Gameplay.Stats
         MoveSpeed,
         CritChance,
         CritDamage,
-        Health,
-        Armor,
-        Luck,
         ProjectileCount,
         ProjectileSpeed,
         CooldownReduction,
-        AreaSize,
-        KnockBack
+        Size,
+        Knockback,
+        BonusHealth,
+        Armor,
+        Luck,
     }
 
     [System.Serializable]
@@ -35,7 +35,6 @@ namespace Project.Gameplay.Stats
     {
         public StatType Type;
         public float BaseValue;
-        public float MinValue;
     }
 
     /// <summary>

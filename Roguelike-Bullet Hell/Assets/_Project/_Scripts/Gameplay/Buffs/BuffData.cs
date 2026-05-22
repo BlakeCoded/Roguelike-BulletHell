@@ -10,7 +10,6 @@ namespace Project.Gameplay.Buffs
     {
         public string BuffName;
 
-        public bool HasDuratiion;
         public float Durration;
 
         public List<StatModifierData> Modifiers;

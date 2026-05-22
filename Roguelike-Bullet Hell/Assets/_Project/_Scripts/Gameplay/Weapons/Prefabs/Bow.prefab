@@ -65,3 +65,9 @@ MonoBehaviour:
   - Type: 0
     BaseValue: 5
     MinValue: 1
+  - Type: 1
+    BaseValue: 1
+    MinValue: 0.1
+  - Type: 8
+    BaseValue: 1
+    MinValue: 1

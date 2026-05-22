@@ -1,19 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using Interfaces;
+using Project.Gameplay.Stats;
 using UnityEngine;
 
-public class GunWeapon : WeaponBehaviour
+namespace Project.Gameplay.Combat
 {
-    protected override void OnUse()
+    public class GunWeapon : WeaponBehaviour
     {
-        Ray ray = new Ray(firePoint.position, firePoint.forward);
-
-        if(Physics.Raycast(ray, out RaycastHit hit))
+        protected override void OnUse(AttackContext attackContext)
         {
-            if(hit.collider.TryGetComponent(out IDamageable target))
+            Ray ray = new Ray(firePoint.position, firePoint.forward);
+
+            if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                target.TakeDamage(Damage);
+                if (hit.collider.TryGetComponent(out IDamageable target))
+                {
+                    // Damage Context - Damage, DidCrit
+
+                    // Target .takeDamage(DamageContext.Damage)
+                    
+                    target.TakeDamage(StatMath.CalculateDamage(attackContext.Damage, attackContext.CritChance, attackContext.CritDamage));
+
+                    // crit sound, etc
+                }
             }
         }
     }

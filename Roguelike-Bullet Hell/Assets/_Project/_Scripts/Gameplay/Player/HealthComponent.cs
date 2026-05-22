@@ -12,7 +12,8 @@ namespace Project.Gameplay.Health
     {
         public float CurrentHealth => currentHealth;
         private float currentHealth;
-        public float MaxHealth => stats.GetStatValue(StatType.Health);
+        public float MaxHealth => baseMaxHealth + stats.GetStatValue(StatType.BonusHealth);
+        [SerializeField] private float baseMaxHealth = 100;
         public bool IsAlive => isAlive;
         private bool isAlive;
 

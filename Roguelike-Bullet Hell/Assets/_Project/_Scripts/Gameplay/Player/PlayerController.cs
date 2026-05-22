@@ -11,7 +11,7 @@ namespace Project.Player
     {
         [SerializeField] private PlayerInput input;
         [SerializeField] private PlayerMovement movement;
-        [SerializeField] private WeaponComponent combat;
+        [SerializeField] private PlayerWeapons combat;
 
         private HealthComponent health;
 
@@ -19,7 +19,7 @@ namespace Project.Player
         {
             input = GetComponent<PlayerInput>();
             movement = GetComponent<PlayerMovement>();
-            combat = GetComponent<WeaponComponent>();
+            combat = GetComponent<PlayerWeapons>();
             health = GetComponent<HealthComponent>();
         }
 

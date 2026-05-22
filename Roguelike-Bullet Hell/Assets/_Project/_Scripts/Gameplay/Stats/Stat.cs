@@ -8,7 +8,6 @@ namespace Project.Gameplay.Stats
     public class Stat
     {
         [SerializeField] private float baseValue;
-        [SerializeField] private float minValue;
         
         private readonly List<StatModifier> modifiers = new();
 
@@ -60,15 +59,14 @@ namespace Project.Gameplay.Stats
 
             value *= multiplier;
 
-            totalValue = Mathf.Max(minValue, value);
+            totalValue = value;
 
             isDirty = false;
         }
 
-        public Stat(float baseValue, float minValue)
+        public Stat(float baseValue)
         {
             this.baseValue = baseValue;
-            this.minValue = minValue;
         }
 
         public void AddModifier(StatModifier modifier)

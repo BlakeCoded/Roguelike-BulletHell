@@ -1,15 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Project.Gameplay.Combat;
 using UnityEngine;
 
 namespace Interfaces
 {
     public interface IProjectile
     {
-        float MoveSpeed { get; }
-        float Damage { get; }
-        float Lifetime { get; }
+        AttackContext AttackContext { get; }
 
-        void Initialize(float damage, float moveSpeed, float lifeTime);
+        void Initialize(AttackContext context);
     }
 }
