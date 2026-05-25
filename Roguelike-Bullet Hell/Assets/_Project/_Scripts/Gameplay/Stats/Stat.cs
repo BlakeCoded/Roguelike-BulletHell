@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Project.Gameplay.Stats
@@ -15,6 +17,8 @@ namespace Project.Gameplay.Stats
 
         private bool isDirty = true;
 
+        public Action OnStatChanged;
+
         public float Value
         {
             get
@@ -22,6 +26,7 @@ namespace Project.Gameplay.Stats
                 if(isDirty)
                 {
                     RecalculateValue();
+                    OnStatChanged?.Invoke();
                 }
 
                 return totalValue;

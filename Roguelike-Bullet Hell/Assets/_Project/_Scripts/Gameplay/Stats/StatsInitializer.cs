@@ -7,7 +7,7 @@ public class StatsInitializer : MonoBehaviour
 {
     [SerializeField] List<StatDefinition> startingStats = new();
 
-    private void Start()
+    private void Awake()
     {
         StatsComponent stats = GetComponent<StatsComponent>();
 

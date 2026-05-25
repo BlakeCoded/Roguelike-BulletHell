@@ -43,7 +43,7 @@ namespace Project.Gameplay.Buffs
             {
                 BuffInstance buff = activeBuffs[i];
 
-                buff.RemainingDuration -= Time.deltaTime;
+                buff.RemainingDuration -= GameTime.DeltaTime;
 
                 if (buff.RemainingDuration <= 0)
                 {

@@ -98,5 +98,10 @@ namespace Project.Gameplay.Stats
 
             return stat;
         }
+
+        public Stat GetStat(StatType type)
+        {
+            return stats[type];
+        }
     }
 }

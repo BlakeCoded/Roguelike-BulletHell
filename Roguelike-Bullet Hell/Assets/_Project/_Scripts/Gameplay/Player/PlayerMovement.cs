@@ -30,7 +30,7 @@ namespace Project.Player
         {
             if (CanMove == false || direction == Vector2.zero) return;
 
-            transform.MoveByXZ(MoveSpeed * Time.deltaTime * direction);
+            transform.MoveByXZ(MoveSpeed * GameTime.DeltaTime * direction);
         }
 
         public void RotateToMousePosition(Vector2 position)
