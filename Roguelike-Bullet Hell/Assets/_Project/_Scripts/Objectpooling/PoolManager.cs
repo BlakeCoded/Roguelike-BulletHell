@@ -128,7 +128,7 @@ namespace Project.Gameplay.Pooling
             Destroy(obj);
         }
 
-        public GameObject Get(GameObject objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation)
+        public GameObject Get(GameObject objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation, Transform parent = null)
         {
             if (objectToSpawn is null)
             {
@@ -145,16 +145,16 @@ namespace Project.Gameplay.Pooling
 
             instanceToPrefab[obj] = objectToSpawn;
 
-            obj.transform.SetParent(null);
+            obj.transform.SetParent(parent);
             obj.transform.SetPositionAndRotation(spawnPosition, spawnRotation);
             obj.SetActive(true);
 
             return obj;
         }
 
-        public T Get<T>(GameObject objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation) where T : Component
+        public T Get<T>(GameObject objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation, Transform parent = null) where T : Component
         {
-            GameObject obj = Get(objectToSpawn, spawnPosition, spawnRotation);
+            GameObject obj = Get(objectToSpawn, spawnPosition, spawnRotation, parent);
 
             if(obj.TryGetComponent(out T component))
             {
@@ -165,9 +165,9 @@ namespace Project.Gameplay.Pooling
             return null;
         }
 
-        public T Get<T>(T prefab, Vector3 spawnPosition, Quaternion spawnRotation) where T : Component
+        public T Get<T>(T prefab, Vector3 spawnPosition, Quaternion spawnRotation, Transform parent = null) where T : Component
         {
-            return Get<T>(prefab.gameObject, spawnPosition, spawnRotation);
+            return Get<T>(prefab.gameObject, spawnPosition, spawnRotation, parent);
         }
 
         public void Release(GameObject obj)

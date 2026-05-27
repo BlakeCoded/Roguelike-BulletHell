@@ -18,7 +18,10 @@ namespace Project.Gameplay.Combat
         private void Awake()
         {
             stats = GetComponent<StatsComponent>();
+        }
 
+        private void Start()
+        {
             EquipWeapon(weaponData);
         }
 

@@ -10,6 +10,8 @@ public abstract class ProjectileBase : MonoBehaviour, IProjectile, IPoolable
 {
     public AttackContext AttackContext { get; private set; }
 
+    public bool IsReleased { get; private set; }
+
     protected float timer;
 
     protected Transform cachedTransform;
@@ -32,11 +34,15 @@ public abstract class ProjectileBase : MonoBehaviour, IProjectile, IPoolable
     {
         HandleMovement();
 
-        timer += Time.deltaTime;
+        timer += GameTime.DeltaTime;
         
         if(timer >= AttackContext.LifeTime)
         {
-            PoolManager.Instance.Release(gameObject);
+            if(!IsReleased)
+            {
+                PoolManager.Instance.Release(gameObject);
+                IsReleased = true;
+            }
         }
     }
 
@@ -47,15 +53,24 @@ public abstract class ProjectileBase : MonoBehaviour, IProjectile, IPoolable
     {
         if(other.TryGetComponent<IDamageable>(out IDamageable target))
         {
-            target.TakeDamage(StatMath.CalculateDamage(AttackContext.Damage, AttackContext.CritChance, AttackContext.CritDamage));
+            DamageContext damageContext = StatMath.CalculateDamage(AttackContext.Damage, AttackContext.CritChance, AttackContext.CritDamage);
+
+            target.TakeDamage(damageContext.Damage);
+
+            GameTextManager.Instance.ShowDamage(cachedTransform.position, damageContext);
         }
 
-        PoolManager.Instance.Release(gameObject);
+        if (!IsReleased)
+        {
+            PoolManager.Instance.Release(gameObject);
+            IsReleased = true;
+        }
     }
 
     public virtual void OnSpawn()
     {
         timer = 0;
+        IsReleased = false;
     }
 
     public virtual void OnDespawn()

@@ -45,7 +45,10 @@ namespace Project.Gameplay.Stats
             if (stats.TryGetValue(type, out Stat stat))
             {
                 stat.AddModifier(modifier);
+                return;
             }
+
+            Debug.Log(type + "doesnt exist");
         }
 
         public void RemoveStatModifier(StatType type, StatModifier modifier)

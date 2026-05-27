@@ -13,13 +13,30 @@ MonoBehaviour:
   m_Name: Bow
   m_EditorClassIdentifier: 
   WeaponName: Bow
-  WeaponDamage: 15
-  WeaponAttacksPerSecond: 1
-  WeaponCritChance: 0
-  WeaponCritDamage: 1.25
-  WeaponProjectileCount: 0
-  WeaponProjectileSpeed: 10
-  WeaponAreaSize: 0
-  WeaponKnockBack: 0
+  Modifiers:
+  - StatType: 0
+    Value: 15
+    ModifierType: 0
+  - StatType: 1
+    Value: 1
+    ModifierType: 0
+  - StatType: 3
+    Value: 1
+    ModifierType: 0
+  - StatType: 4
+    Value: 1.5
+    ModifierType: 0
+  - StatType: 5
+    Value: 1
+    ModifierType: 0
+  - StatType: 6
+    Value: 10
+    ModifierType: 0
+  - StatType: 8
+    Value: 1
+    ModifierType: 0
+  - StatType: 9
+    Value: 1
+    ModifierType: 0
   BehaviourPrefab: {fileID: 4561443180814416051, guid: 9a290cbb3629ba043b8a433630f2b7fb,
     type: 3}

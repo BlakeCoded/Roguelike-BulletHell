@@ -13,13 +13,21 @@ MonoBehaviour:
   m_Name: Gun
   m_EditorClassIdentifier: 
   WeaponName: Gun
-  WeaponDamage: 3
-  WeaponAttacksPerSecond: 5
-  WeaponCritChance: 1
-  WeaponCritDamage: 1.25
-  WeaponProjectileCount: 0
-  WeaponProjectileSpeed: 1
-  WeaponAreaSize: 0
-  WeaponKnockBack: 0
+  Modifiers:
+  - StatType: 0
+    Value: 3
+    ModifierType: 0
+  - StatType: 1
+    Value: 5
+    ModifierType: 0
+  - StatType: 3
+    Value: 50
+    ModifierType: 0
+  - StatType: 4
+    Value: 1.25
+    ModifierType: 0
+  - StatType: 5
+    Value: 1
+    ModifierType: 0
   BehaviourPrefab: {fileID: 1511942705516122535, guid: 67a63e409074a1c418a68f099fdbc528,
     type: 3}

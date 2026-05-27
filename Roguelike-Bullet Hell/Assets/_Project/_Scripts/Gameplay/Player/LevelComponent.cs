@@ -14,7 +14,9 @@ namespace Project.Gameplay.Stats
         public Action<int> OnLevelUp;
         public Action<int> OnExpPickUp;
 
+        [Tooltip("Growth Rate of Experience Needed Each Level")]
         [SerializeField] private float growthRate = 1.25f;
+        [Tooltip("Starting EXP Needed for First Level")]
         [SerializeField] private int baseExp = 100;
 
         private void Awake()
@@ -24,6 +26,8 @@ namespace Project.Gameplay.Stats
 
         public void AddExp(int amount)
         {
+            OnExpPickUp?.Invoke(amount);
+
             CurrentExp += amount;
 
             while (CurrentExp > ExpToNextLevel)
@@ -34,11 +38,15 @@ namespace Project.Gameplay.Stats
 
         private void LevelUp()
         {
+            OnLevelUp?.Invoke(Level);
+
             CurrentExp -= ExpToNextLevel;
 
             Level++;
 
             ExpToNextLevel = CalculateExpRequired(Level);
+
+            //Debug.Log("Level: " + Level + " Exp to next level: " + ExpToNextLevel);
         }
 
         private int CalculateExpRequired(int level)

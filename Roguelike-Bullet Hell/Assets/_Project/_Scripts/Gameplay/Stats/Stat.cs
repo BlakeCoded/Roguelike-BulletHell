@@ -10,14 +10,12 @@ namespace Project.Gameplay.Stats
     public class Stat
     {
         [SerializeField] private float baseValue;
-        
-        private readonly List<StatModifier> modifiers = new();
-
         private float totalValue;
 
+        public Action<float> OnValueChanged;
         private bool isDirty = true;
 
-        public Action OnStatChanged;
+        private readonly List<StatModifier> modifiers = new();
 
         public float Value
         {
@@ -26,7 +24,7 @@ namespace Project.Gameplay.Stats
                 if(isDirty)
                 {
                     RecalculateValue();
-                    OnStatChanged?.Invoke();
+                    OnValueChanged?.Invoke(Value);
                 }
 
                 return totalValue;
@@ -98,6 +96,8 @@ namespace Project.Gameplay.Stats
         public void SetBaseValue(float value)
         {
             baseValue = value;
+
+            isDirty = true;
         }
     }
 }

@@ -16,11 +16,11 @@ namespace Project.Gameplay.Combat
             {
                 if (hit.collider.TryGetComponent(out IDamageable target))
                 {
-                    // Damage Context - Damage, DidCrit
+                    DamageContext dc = StatMath.CalculateDamage(attackContext.Damage, attackContext.CritChance, attackContext.CritDamage);
 
-                    // Target .takeDamage(DamageContext.Damage)
-                    
-                    target.TakeDamage(StatMath.CalculateDamage(attackContext.Damage, attackContext.CritChance, attackContext.CritDamage));
+                    target.TakeDamage(dc.Damage);
+
+                    GameTextManager.Instance.ShowDamage(hit.point, dc);
 
                     // crit sound, etc
                 }
