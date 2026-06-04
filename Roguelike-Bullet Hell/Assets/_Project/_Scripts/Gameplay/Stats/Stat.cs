@@ -1,21 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Interfaces;
 using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Project.Gameplay.Stats
 {
     [System.Serializable]
-    public class Stat
+    public class Stat : IReadOnlyStat
     {
-        [SerializeField] private float baseValue;
-        private float totalValue;
-
-        public Action<float> OnValueChanged;
-        private bool isDirty = true;
-
-        private readonly List<StatModifier> modifiers = new();
+        // Public
+        public event Action<float> OnValueChanged;
 
         public float Value
         {
@@ -31,15 +27,21 @@ namespace Project.Gameplay.Stats
             }
         }
 
+        // Private
+        [SerializeField] private float baseValue;
+        private float totalValue;
+        private bool isDirty = true;
+        private readonly List<StatModifier> modifiers = new();
+
         private void RecalculateValue()
         {
-            float value = baseValue;
+            float value = this.baseValue;
 
             float percentAdd = 0f;
 
             float multiplier = 1f;
 
-            foreach (StatModifier modifier in modifiers)
+            foreach (StatModifier modifier in this.modifiers)
             {
                 switch (modifier.Type)
                 {
@@ -62,42 +64,42 @@ namespace Project.Gameplay.Stats
 
             value *= multiplier;
 
-            totalValue = value;
+            this.totalValue = value;
 
-            isDirty = false;
+            this.isDirty = false;
         }
 
         public Stat(float baseValue)
         {
-            this.baseValue = baseValue;
+            SetBaseValue(baseValue);
         }
 
         public void AddModifier(StatModifier modifier)
         {
-            modifiers.Add(modifier);
+            this.modifiers.Add(modifier);
 
-            isDirty = true;
+            this.isDirty = true;
         }
 
         public void RemoveModifier(StatModifier modifier)
         {
-            modifiers.Remove(modifier);
+            this.modifiers.Remove(modifier);
 
-            isDirty = true;
+            this.isDirty = true;
         }
 
         public void RemoveAllFromSource(object source)
         {
-            modifiers.RemoveAll(modifier => modifier.Source == source);
+            this.modifiers.RemoveAll(modifier => modifier.Source == source);
 
-            isDirty = true;
+            this.isDirty = true;
         }
 
         public void SetBaseValue(float value)
         {
-            baseValue = value;
+            this.baseValue = value;
 
-            isDirty = true;
+            this.isDirty = true;
         }
     }
 }

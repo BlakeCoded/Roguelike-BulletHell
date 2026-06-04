@@ -11,6 +11,6 @@ namespace Interfaces
         /// <summary>
         /// Sets up required data, references, or state before the object can be used.
         /// </summary>
-        void Initialize();
+        void Init();
     }
 }

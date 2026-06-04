@@ -8,6 +8,9 @@ using UnityEngine;
 
 public abstract class ProjectileBase : MonoBehaviour, IProjectile, IPoolable
 {
+    [SerializeField] protected float projectileSpeed;
+    [SerializeField] protected float lifeTime;
+
     public AttackContext AttackContext { get; private set; }
 
     public bool IsReleased { get; private set; }
@@ -36,7 +39,7 @@ public abstract class ProjectileBase : MonoBehaviour, IProjectile, IPoolable
 
         timer += GameTime.DeltaTime;
         
-        if(timer >= AttackContext.LifeTime)
+        if(timer >= lifeTime)
         {
             if(!IsReleased)
             {
@@ -51,19 +54,18 @@ public abstract class ProjectileBase : MonoBehaviour, IProjectile, IPoolable
     // Add layers etc to only interact with, WORLD, ENVIRONMENT, ENEMY
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent<IDamageable>(out IDamageable target))
+        if (other.TryGetComponent<Entity>(out Entity target))
         {
-            DamageContext damageContext = StatMath.CalculateDamage(AttackContext.Damage, AttackContext.CritChance, AttackContext.CritDamage);
+            DamageContext damageContext = DamageResolver.CreateDamageContext(AttackContext, target, cachedTransform.position,
+                                                                            (other.transform.position - cachedTransform.position).normalized);
 
-            target.TakeDamage(damageContext.Damage);
+            DamageResolver.ProcessHit(damageContext);
 
-            GameTextManager.Instance.ShowDamage(cachedTransform.position, damageContext);
-        }
-
-        if (!IsReleased)
-        {
-            PoolManager.Instance.Release(gameObject);
-            IsReleased = true;
+            if (!IsReleased)
+            {
+                PoolManager.Instance.Release(gameObject);
+                IsReleased = true;
+            }
         }
     }
 

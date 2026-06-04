@@ -7,20 +7,20 @@ using UnityEngine.InputSystem;
 
 namespace Project.Player
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : Entity
     {
+
         [SerializeField] private PlayerInput input;
         [SerializeField] private PlayerMovement movement;
         [SerializeField] private PlayerWeapons combat;
 
-        private HealthComponent health;
-
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             input = GetComponent<PlayerInput>();
             movement = GetComponent<PlayerMovement>();
             combat = GetComponent<PlayerWeapons>();
-            health = GetComponent<HealthComponent>();
         }
 
         private void Update()
@@ -30,9 +30,11 @@ namespace Project.Player
             movement.Move(input.MoveInput);
             movement.RotateToMousePosition(input.MousePosition);
 
+            combat.Attack();
+
             if (input.FirePressed)
             {
-                combat.Attack();
+                //combat.Attack();
             }
         }
 
@@ -49,12 +51,12 @@ namespace Project.Player
 
         private void OnEnable()
         {
-            health.OnDeath += OnDeath;
+            Health.OnDeath += OnDeath;
         }
 
         private void OnDisable()
         {
-            health.OnDeath -= OnDeath;
+            Health.OnDeath -= OnDeath;
         }
     }
 }

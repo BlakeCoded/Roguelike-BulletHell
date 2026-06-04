@@ -8,7 +8,7 @@ public class DefaultProjectile : ProjectileBase
 
     protected override void OnInitalize()
     {
-        velocity = AttackContext.ProjectileSpeed * cachedTransform.forward;
+        velocity = projectileSpeed * cachedTransform.forward;
     }
 
     protected override void HandleMovement()

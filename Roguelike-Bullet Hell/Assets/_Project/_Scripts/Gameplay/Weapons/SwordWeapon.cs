@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Project.Gameplay.Combat
 {
-    public class SwordWeapon : WeaponBehaviour
+    public class SwordWeapon : WeaponInstance
     {
         protected override void OnUse(AttackContext attackContext)
         {

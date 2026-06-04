@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Project.Gameplay.Combat;
 using UnityEngine;
 
 namespace Interfaces
 {
     public interface IDamageable
     {
-        void TakeDamage(float amount);
-
+        DamageResult TakeDamage(DamageContext context);
         void Heal(float amount);
     }
 }

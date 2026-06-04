@@ -1,20 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
+using Interfaces;
 using UnityEngine;
 
 namespace Project.Gameplay.Combat
 {
-    public class AttackContext
+    public readonly struct AttackContext
     {
-        public float Damage;
-        public float AttacksPerSecond;
-        public float CritChance;
-        public float CritDamage;
-        public float ProjectileCount;
-        public float ProjectileSpeed;
-        public float Size;
-        public float Knockback;
-        public float LifeTime;
-        public Transform owner;
+        // Ownership
+        public Entity Owner { get; }
+
+        // Core Damage
+        public float Damage { get; }
+        public List<IOnHitEffect> OnHitEffects { get; }
+
+        // Crit
+        public float CritChance { get; }
+        public float CritDamage { get; }
+        
+        // Projectile Creation
+        public int ProjectileCount { get; }
+
+        // General Attack Scaling
+        public float Size { get; }
+
+        // Utility
+        public float Knockback { get; }
+        
+
+        public AttackContext(
+            Entity Owner,
+            float Damage,
+            List<IOnHitEffect> OnHitEffects,
+            float CritChance,
+            float CritDamage,
+            int ProjectileCount,
+            float Size,
+            float Knockback)
+        {
+            this.Owner = Owner;
+            this.Damage = Damage;
+            this.OnHitEffects = OnHitEffects;
+            this.CritChance = CritChance;
+            this.CritDamage = CritDamage;
+            this.ProjectileCount = ProjectileCount;
+            this.Size = Size;
+            this.Knockback = Knockback;
+        }
     }
 }

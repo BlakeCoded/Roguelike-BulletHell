@@ -24,8 +24,8 @@ MonoBehaviour:
     Value: 50
     ModifierType: 0
   - StatType: 4
-    Value: 1.25
-    ModifierType: 0
+    Value: 0.05
+    ModifierType: 1
   - StatType: 5
     Value: 1
     ModifierType: 0

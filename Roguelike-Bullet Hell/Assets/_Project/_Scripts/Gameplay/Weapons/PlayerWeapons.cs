@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Interfaces;
 using Project.Gameplay.Stats;
 using UnityEngine;
 
@@ -10,36 +11,46 @@ namespace Project.Gameplay.Combat
     {
         [SerializeField] private Transform weaponPosition;
         [SerializeField] private Transform weaponFirePoint;
-        [SerializeField] private WeaponData weaponData;
+        [SerializeField] private WeaponData StartingWeapon;
 
-        private WeaponBehaviour currentWeapon;
-        private StatsComponent stats;
+        private WeaponInstance currentWeapon;
+        private Entity Owner;
+
 
         private void Awake()
         {
-            stats = GetComponent<StatsComponent>();
+            Owner = GetComponent<Entity>();
         }
 
         private void Start()
         {
-            EquipWeapon(weaponData);
+            EquipWeapon(StartingWeapon);
         }
 
         public void EquipWeapon(WeaponData data)
         {
-            if(currentWeapon is not null)
+            if(currentWeapon != null)
             {
+                Owner.Stats.RemoveAllStatModifiers(currentWeapon);
+
                 Destroy(currentWeapon.gameObject);
             }
 
-            currentWeapon = Instantiate(data.BehaviourPrefab, weaponPosition);
-
-            currentWeapon.Initialize(data, stats, weaponFirePoint);
+            currentWeapon = Instantiate(data.InstancePrefab, weaponPosition);
+            currentWeapon.Initialize(Owner, data, weaponFirePoint);
         }
 
         public void Attack()
         {
             currentWeapon?.Use();
+        }
+
+        public void AddOnHitEffect(IOnHitEffect onHitEffect)
+        {
+            if(currentWeapon != null)
+            {
+                currentWeapon.AddOnHitEffect(onHitEffect);
+            }
         }
     }
 }

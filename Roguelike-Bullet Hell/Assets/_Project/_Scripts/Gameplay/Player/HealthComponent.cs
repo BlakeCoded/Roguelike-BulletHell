@@ -2,14 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Interfaces;
+using Project.Gameplay.Combat;
 using Project.Gameplay.Stats;
 using UnityEngine;
 
 namespace Project.Gameplay.Health
 {
     [RequireComponent(typeof(StatsComponent))]
-    public class HealthComponent : MonoBehaviour, IDamageable
+    [RequireComponent(typeof(StatsInitializer))]
+    public class HealthComponent : MonoBehaviour, IDamageable, IHealable
     {
+        private StatsComponent stats;
+
         public float CurrentHealth => currentHealth;
         private float currentHealth;
         public float MaxHealth => baseMaxHealth + stats.GetStatValue(StatType.BonusHealth);
@@ -17,9 +21,11 @@ namespace Project.Gameplay.Health
         public bool IsAlive => isAlive;
         private bool isAlive;
 
-        public Action OnDeath;
 
-        private StatsComponent stats;
+        // Events
+        public event Action OnDamaged;
+        public event Action OnDeath;
+        public event Action OnKilledTarget;
 
         private void Awake()
         {
@@ -32,16 +38,23 @@ namespace Project.Gameplay.Health
             currentHealth = MaxHealth;
         }
 
-        public void TakeDamage(float amount)
+        public DamageResult TakeDamage(DamageContext context)
         {
-            if (!IsAlive) return;
+            if (!IsAlive) return new DamageResult(context.CombatContext, 0, false, false);
 
-            currentHealth -= amount;
+            float finalDamage = CalaculateDamage(context);
 
-            if (currentHealth <= 0)
+            currentHealth -= finalDamage;
+            currentHealth = Mathf.Max(0f, currentHealth);
+
+            bool killedTarget = currentHealth <= 0f;
+
+            if (killedTarget)
             {
-                Die();
+                //Die();
             }
+
+            return new DamageResult(context.CombatContext, finalDamage, context.IsCrit, killedTarget);
         }
 
         public void Heal(float amount)
@@ -58,6 +71,11 @@ namespace Project.Gameplay.Health
             isAlive = false;
 
             OnDeath?.Invoke();
+        }
+
+        float CalaculateDamage(DamageContext context)
+        {
+            return context.Damage;
         }
     }
 }

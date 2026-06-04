@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Interfaces;
+using Project.Gameplay.Combat;
 using Project.Gameplay.Pooling;
 using TMPro;
 using UnityEngine;
@@ -26,15 +27,15 @@ namespace Project.UI
             cachedTransform = transform;
         }
 
-        public void Initialize(Vector3 position, float value, bool crit)
+        public void Initialize(DamageResult result, Vector3 hitPosition)
         {
-            this.position = position;
+            this.position = hitPosition;
 
             cachedTransform.position = MainCamera.WorldToScreenPoint(this.position);
 
-            text.text = value.ToString("0");
+            text.text = result.DamageDealt.ToString("0");
 
-            if(!crit)
+            if(!result.IsCritical)
             {
                 text.color = normalColour;
                 return;

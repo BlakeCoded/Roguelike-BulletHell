@@ -15,17 +15,14 @@ MonoBehaviour:
   WeaponName: Bow
   Modifiers:
   - StatType: 0
-    Value: 15
+    Value: 20
     ModifierType: 0
   - StatType: 1
-    Value: 1
-    ModifierType: 0
-  - StatType: 3
-    Value: 1
+    Value: 0.5
     ModifierType: 0
   - StatType: 4
-    Value: 1.5
-    ModifierType: 0
+    Value: 0.15
+    ModifierType: 1
   - StatType: 5
     Value: 1
     ModifierType: 0
@@ -35,8 +32,5 @@ MonoBehaviour:
   - StatType: 8
     Value: 1
     ModifierType: 0
-  - StatType: 9
-    Value: 1
-    ModifierType: 0
-  BehaviourPrefab: {fileID: 4561443180814416051, guid: 9a290cbb3629ba043b8a433630f2b7fb,
+  InstancePrefab: {fileID: 4561443180814416051, guid: 9a290cbb3629ba043b8a433630f2b7fb,
     type: 3}

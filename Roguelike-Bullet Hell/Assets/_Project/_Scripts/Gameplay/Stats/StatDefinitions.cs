@@ -7,19 +7,34 @@ namespace Project.Gameplay.Stats
     [System.Serializable]
     public enum StatType
     {
+        // Offensive Stats
         Damage,
         AttackSpeed,
-        MoveSpeed,
         CritChance,
         CritDamage,
+
+        // Projectile Stats
         ProjectileCount,
         ProjectileSpeed,
-        CooldownReduction,
-        Size,
         Knockback,
+
+        // Movement Stats
+        MoveSpeed,
+
+        // Defensive Stats
         BonusHealth,
         Armor,
+        HealthRegen,
+
+        // Utility Stats
+        CooldownReduction,
         Luck,
+
+        // Scaling Stats
+        Size,
+
+        // Timing Stats
+        LifeTime,
     }
 
     [System.Serializable]

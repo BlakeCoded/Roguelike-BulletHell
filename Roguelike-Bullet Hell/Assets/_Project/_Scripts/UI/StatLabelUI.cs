@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Interfaces;
 using Project.Gameplay.Stats;
 using TMPro;
 using UnityEngine;
@@ -15,9 +16,9 @@ namespace Project.UI
         [SerializeField] private StatType statType;
         public StatType StatType => statType;
 
-        private Stat stat;
+        private IReadOnlyStat stat;
 
-        public void Initalize(Stat stat)
+        public void Initalize(IReadOnlyStat stat)
         {
             this.stat = stat;
 

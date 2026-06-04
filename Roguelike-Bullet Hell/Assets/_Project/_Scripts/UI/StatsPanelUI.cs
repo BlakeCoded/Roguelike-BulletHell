@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Interfaces;
 using Project.Gameplay.Stats;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ namespace Project.UI
         {
             foreach (var label in labels)
             {
-                Stat stat = stats.GetStat(label.StatType);
+                IReadOnlyStat stat = stats.GetStat(label.StatType);
 
                 if(stat != null)
                 {

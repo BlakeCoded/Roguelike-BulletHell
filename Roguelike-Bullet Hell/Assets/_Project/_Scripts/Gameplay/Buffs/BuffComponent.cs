@@ -31,10 +31,7 @@ namespace Project.Gameplay.Buffs
 
         private void RemoveBuff(BuffInstance buff)
         {
-            foreach (StatModifierData mod in buff.Data.Modifiers)
-            {
-                stats.RemoveAllStatModifiers(mod.StatType, buff);
-            }
+            stats.RemoveAllStatModifiers(buff);
         }
 
         private void Update()

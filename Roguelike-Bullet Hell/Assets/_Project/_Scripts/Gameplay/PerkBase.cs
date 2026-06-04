@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Project.Gameplay.Stats;
 using Project.Gameplay.Buffs;
+using Project.Gameplay.Combat;
 
 public class PerkBase : MonoBehaviour
 {
@@ -13,18 +14,20 @@ public class PerkBase : MonoBehaviour
     {
         //AddStat(other);
 
-        AddBuffs(other);
+        //AddBuffs(other);
+
+        AddOnHitEffect(other);
     }
 
     private void AddStat(Collider other)
     {
-        StatsComponent stats = other.GetComponentInParent<StatsComponent>();
+        Hurtbox player = other.GetComponent<Hurtbox>();
 
-        if (stats != null)
+        if (player.Owner.Stats != null)
         {
-            Debug.Log(stats.GetStatValue(StatType.AttackSpeed));
-            stats.AddStatModifier(modifier.StatType, new StatModifier(modifier.ModifierType, modifier.Value));
-            Debug.Log(stats.GetStatValue(StatType.AttackSpeed));
+            Debug.Log(player.Owner.Stats.GetStatValue(StatType.AttackSpeed));
+            player.Owner.Stats.AddStatModifier(modifier.StatType, new StatModifier(modifier.ModifierType, modifier.Value));
+            Debug.Log(player.Owner.Stats.GetStatValue(StatType.AttackSpeed));
         }
     }
 
@@ -35,6 +38,17 @@ public class PerkBase : MonoBehaviour
         foreach (BuffData buff in buffs)
         {
             bc.AddBuff(buff);
+        }
+    }
+
+    private void AddOnHitEffect(Collider other)
+    {
+        if(other.TryGetComponent<Hurtbox>(out Hurtbox player))
+        {
+            if(player.Owner.TryGetComponent<PlayerWeapons>(out PlayerWeapons playerWeapons))
+            {
+                playerWeapons.AddOnHitEffect(new BurnOnHitEffect());
+            }
         }
     }
 }

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 using Interfaces;
+using Project.Singleton;
 
 namespace Project.Gameplay.Pooling
 {
-    public class PoolManager : MonoBehaviour, IInitializable
+    public class PoolManager : MonoBehaviourSingleton<PoolManager>, IInitializable
     {
-        public static PoolManager Instance { get; private set; }
         public bool IsInitialized { get; private set; } // Used for bootstrap in future
 
         [SerializeField] private List<GameObject> objectsToPreInitialize;
@@ -21,19 +21,16 @@ namespace Project.Gameplay.Pooling
         const int MIN_POOL_CAPACITY = 10;
         const int MAX_POOL_CAPACITY = 1000;
 
-        public void Initialize()
+        protected override void OnAwake()
+        {
+            base.OnAwake();
+
+            Init();
+        }
+
+        public void Init()
         {
             if(IsInitialized) return;
-
-            if(Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            Instance = this;
-
-            DontDestroyOnLoad(gameObject);
 
             Setup();
 
@@ -42,11 +39,6 @@ namespace Project.Gameplay.Pooling
             objectsToPreInitialize = null;
 
             IsInitialized = true;
-        }
-
-        private void Awake()
-        {
-            Initialize();
         }
 
         private void Setup()
@@ -182,14 +174,6 @@ namespace Project.Gameplay.Pooling
             else
             {
                 Debug.LogWarning("Trying to release an object that is not pooled: " + obj.name);
-            }
-        }
-
-        private void OnDestroy()
-        {
-            if(Instance == this)
-            {
-                Instance = null;
             }
         }
     }

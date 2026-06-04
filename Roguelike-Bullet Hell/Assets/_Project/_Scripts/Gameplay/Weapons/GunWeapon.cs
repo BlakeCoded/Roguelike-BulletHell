@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Project.Gameplay.Combat
 {
-    public class GunWeapon : WeaponBehaviour
+    public class GunWeapon : WeaponInstance
     {
         protected override void OnUse(AttackContext attackContext)
         {
@@ -14,13 +14,13 @@ namespace Project.Gameplay.Combat
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                if (hit.collider.TryGetComponent(out IDamageable target))
+                if (hit.collider.TryGetComponent(out Entity target))
                 {
-                    DamageContext dc = StatMath.CalculateDamage(attackContext.Damage, attackContext.CritChance, attackContext.CritDamage);
+                    Vector3 hitPoint = hit.point;
 
-                    target.TakeDamage(dc.Damage);
-
-                    GameTextManager.Instance.ShowDamage(hit.point, dc);
+                    DamageContext damageContext = DamageResolver.CreateDamageContext(attackContext, target, hitPoint, (hit.transform.position - hitPoint).normalized);
+                        
+                    DamageResolver.ProcessHit(damageContext);
 
                     // crit sound, etc
                 }

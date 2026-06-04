@@ -2,22 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using Interfaces;
 using Project.Gameplay.Stats;
+using Project.Singleton;
 using Project.UI;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour, IInitializable
+public class GameManager : MonoBehaviourSingleton<GameManager> , IInitializable
 {
     [SerializeField] GameObject playerPrefab;
     [SerializeField] StatsPanelUI statsPanel;
 
     public bool IsInitialized {  get; private set; }
 
-    void Awake()
+    protected override void OnAwake()
     {
-        Initialize();
+        base.OnAwake();
+
+        Init();
     }
 
-    public void Initialize()
+    public void Init()
     {
         IsInitialized = true;
 

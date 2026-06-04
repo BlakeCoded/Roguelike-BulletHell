@@ -10,6 +10,6 @@ namespace Project.Gameplay.Combat
     {
         public string WeaponName;
         public List<StatModifierData> Modifiers;
-        public WeaponBehaviour BehaviourPrefab;
+        public WeaponInstance InstancePrefab;
     }
 }
