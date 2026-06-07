@@ -11,16 +11,16 @@ public class StatsInitializer : MonoBehaviour, IInitializable
     public bool IsInitialized => _isInitialized;
     private bool _isInitialized = false;
 
+    private StatsComponent stats;
+
     private void Awake()
     {
-        Init();
+        Init(GetComponent<StatsComponent>());
     }
 
-    public void Init()
+    public void Init(StatsComponent stats)
     {
         _isInitialized = true;
-
-        StatsComponent stats = GetComponent<StatsComponent>();
 
         foreach (var sd in statsData.stats)
         {
@@ -31,5 +31,10 @@ public class StatsInitializer : MonoBehaviour, IInitializable
         {
             stats.AddStatModifier(sd.StatType, new StatModifier(sd.ModifierType, sd.Value));
         }
+    }
+
+    public void Init()
+    {
+        
     }
 }

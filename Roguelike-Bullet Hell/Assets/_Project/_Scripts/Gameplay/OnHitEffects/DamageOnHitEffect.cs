@@ -6,12 +6,17 @@ using UnityEngine;
 
 public class DamageOnHitEffect : IOnHitEffect
 {
-    public void Apply(DamageContext context, DamageResult result)
+    public string Id => "Damage";
+    public StackRule StackRule => StackRule.Stackable;
+
+    public void Apply(DamageResult result, int count)
     {
-        float damage = result.DamageDealt * 0.1f;
+        Entity target = result.CombatContext.Target;
 
-        DamageContext damageContext = DamageContext.Create(context, damage);
+        float damage = (result.DamageDealt * 0.05f) * count;
 
-        DamageResolver.ProcessHit(damageContext);
+        DamageContext dc = new DamageContext(result.CombatContext, damage, DamageResolver.EmptyOnHitEffects, false, target.Transform.position, Vector3.zero, 0f);
+
+        DamageResolver.ProcessHit(dc);
     }
 }

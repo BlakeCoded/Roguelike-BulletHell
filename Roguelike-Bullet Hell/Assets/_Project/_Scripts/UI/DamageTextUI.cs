@@ -56,7 +56,7 @@ namespace Project.UI
             {
                 if(!IsReleased)
                 {
-                    PoolManager.Instance.Release(gameObject);
+                    ObjectPoolManager.Release(gameObject);
                     IsReleased = true;
                 }
             }

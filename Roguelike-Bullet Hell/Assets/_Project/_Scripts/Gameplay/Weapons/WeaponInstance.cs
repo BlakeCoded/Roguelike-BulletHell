@@ -5,6 +5,7 @@ using Project.Gameplay.Stats;
 using static Project.Gameplay.Stats.StatMath;
 using UnityEngine;
 using Interfaces;
+using System.Linq;
 
 namespace Project.Gameplay.Combat
 {
@@ -16,7 +17,7 @@ namespace Project.Gameplay.Combat
         protected Transform firePoint;
 
         private bool statsInitialized = false;
-        private readonly List<IOnHitEffect> onHitEffects = new();
+        private EffectContainer onHitEffects = new();
 
         public virtual void Initialize(Entity owner, WeaponData data, Transform firePoint)
         {
@@ -60,7 +61,7 @@ namespace Project.Gameplay.Combat
             return new AttackContext(
                 Owner: Owner,
                 Damage: ClampDamage(Owner.Stats.GetStatValue(StatType.Damage)),
-                OnHitEffects: onHitEffects,
+                OnHitEffects: onHitEffects.CreateSnapshot(),
                 CritChance: ClampCritChance(Owner.Stats.GetStatValue(StatType.CritChance)),
                 CritDamage: ClampCritDamage(Owner.Stats.GetStatValue(StatType.CritDamage)),
                 ProjectileCount: ClampProjectileCount(Owner.Stats.GetStatValue(StatType.ProjectileCount)),

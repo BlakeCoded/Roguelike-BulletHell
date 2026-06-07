@@ -12,7 +12,7 @@ namespace Project.Gameplay.Combat
 
         // Core Damage
         public float Damage { get; }
-        public List<IOnHitEffect> OnHitEffects { get; }
+        public List<OnHitEffectEntry> OnHitEffects { get; }
 
         // Crit
         public float CritChance { get; }
@@ -31,7 +31,7 @@ namespace Project.Gameplay.Combat
         public AttackContext(
             Entity Owner,
             float Damage,
-            List<IOnHitEffect> OnHitEffects,
+            List<OnHitEffectEntry> OnHitEffects,
             float CritChance,
             float CritDamage,
             int ProjectileCount,

@@ -12,19 +12,16 @@ namespace Project.Gameplay.Combat
         private readonly float duration = 5f;
         private readonly float tickRate = 1f;
 
-        public void Apply(DamageContext context, DamageResult result)
+        public string Id => "Burn";
+        public StackRule StackRule => StackRule.Stackable;
+
+        public void Apply(DamageResult result, int count)
         {
             CombatContext combatContext = result.CombatContext;
 
-            float damage = result.DamageDealt * 0.1f;
+            float damage = result.DamageDealt * 0.1f * count;
 
-            if (combatContext.Target.StatusEffects.TryGetStatusEffect<BurnStatusEffect>(out BurnStatusEffect effect))
-            {
-                effect.Refresh(damage, duration);
-                return;
-            }
-
-            BurnStatusEffect burn = new BurnStatusEffect(combatContext.Owner, combatContext.Target, damage, duration, tickRate);
+            BurnStatusEffect burn = new BurnStatusEffect(combatContext, damage, duration, tickRate);
 
             combatContext.Target.StatusEffects.AddStatusEffect(burn);
         }

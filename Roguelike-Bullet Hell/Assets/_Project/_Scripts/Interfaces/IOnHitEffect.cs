@@ -7,6 +7,8 @@ namespace Interfaces
 {
     public interface IOnHitEffect
     {
-        void Apply(DamageContext context, DamageResult result);
+        public string Id { get; }
+        public StackRule StackRule { get; }
+        void Apply(DamageResult result, int count);
     }
 }

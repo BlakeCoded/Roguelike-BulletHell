@@ -12,7 +12,7 @@ namespace Project.Gameplay.Combat
 
         // Damage
         public float Damage { get; }
-        public List<IOnHitEffect> OnHitEffects { get; }
+        public List<OnHitEffectEntry> OnHitEffects { get; }
 
         // Crit
         public bool IsCrit { get; }
@@ -27,7 +27,7 @@ namespace Project.Gameplay.Combat
         public DamageContext(
             CombatContext CombatContext,
             float Damage,
-            List<IOnHitEffect> OnHitEffects,
+            List<OnHitEffectEntry> OnHitEffects,
             bool IsCrit,
             Vector3 HitPosition,
             Vector3 HitDirection,
@@ -47,7 +47,7 @@ namespace Project.Gameplay.Combat
             return new DamageContext(
                 context.CombatContext,
                 damage,
-                new(),
+                DamageResolver.EmptyOnHitEffects,
                 false,
                 context.HitPosition,
                 context.HitDirection,

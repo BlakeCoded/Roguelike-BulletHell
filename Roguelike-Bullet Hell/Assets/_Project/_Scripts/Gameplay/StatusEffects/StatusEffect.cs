@@ -7,19 +7,15 @@ namespace Project.Gameplay.Combat
 {
     public abstract class StatusEffect
     {
-        protected Entity Owner { get; set; }
-        protected Entity Target { get; set; }
-        protected float Damage { get; set; }
-        protected float Duration { get; set; }
-        protected float TickRate { get; set; }
+        protected CombatContext CombatContext { get; set; }
+        public float Duration { get; set; }
+        protected float BaseDuration {  get; set; }
 
-        protected StatusEffect(Entity owner, Entity target, float damage, float duration, float tickRate)
+        protected StatusEffect(CombatContext combatContext, float duration)
         {
-            Owner = owner;
-            Target = target;
-            Damage = damage;
+            CombatContext = combatContext;
             Duration = duration;
-            TickRate = tickRate;
+            BaseDuration = duration;
         }
 
         public bool IsExpired => Duration <= 0;
@@ -27,6 +23,6 @@ namespace Project.Gameplay.Combat
         public virtual void OnApplied() { }
         public virtual void OnTick() { }
         public virtual void OnExpired() { }
-        public abstract void Refresh(float damage, float duration);
+        public abstract void Reapply(StatusEffect effect);
     }
 }

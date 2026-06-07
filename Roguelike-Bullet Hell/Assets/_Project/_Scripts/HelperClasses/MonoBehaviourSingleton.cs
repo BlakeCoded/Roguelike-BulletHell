@@ -76,6 +76,19 @@ namespace Project.Singleton
             }
         }
 
+        public override void OnBootstrapped()
+        {
+            // set bootstrap logic
+            ConstructIfNeeded(this);
+
+            OnInit();
+        }
+
+        protected virtual void OnInit()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+
         private void Awake()
         {
             ConstructIfNeeded(this);

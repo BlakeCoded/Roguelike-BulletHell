@@ -8,9 +8,11 @@ namespace Project.Gameplay.Combat
 {
     public static class DamageResolver
     {
+        public static readonly List<OnHitEffectEntry> EmptyOnHitEffects = new();
+
         public static DamageContext CreateDamageContext(AttackContext context, Entity Target, Vector3 hitPosition, Vector3 hitDirection)
         {
-            bool isCrit = Random.value < context.CritChance / 100f;
+            bool isCrit = Random.value < context.CritChance * 0.01f;
 
             float damage = isCrit ? context.Damage * context.CritDamage : context.Damage;
 
@@ -18,20 +20,6 @@ namespace Project.Gameplay.Combat
 
             return new DamageContext(combatContext, damage, context.OnHitEffects, isCrit, hitPosition, hitDirection, context.Knockback);
         }
-
-        //public static DamageContext ProcessHit(AttackContext context, Entity target, Vector3 hitPosition, Vector3 hitDirection)
-        //{
-        //    DamageContext damageContext = CreateDamageContext(context, target, hitPosition, hitDirection);
-
-        //    target.Health.TakeDamage(damageContext);
-
-        //    foreach(IOnHitEffect effect in damageContext.OnHitEffects)
-        //    {
-        //        effect.Apply(damageContext);
-        //    }
-
-        //    return damageContext;
-        //}
 
         public static void ProcessHit(DamageContext context)
         {
@@ -47,9 +35,9 @@ namespace Project.Gameplay.Combat
                 // apply knockback
             }
 
-            foreach (IOnHitEffect effect in context.OnHitEffects)
+            foreach (OnHitEffectEntry effect in context.OnHitEffects)
             {
-                effect.Apply(context, result);
+                effect.Effect.Apply(result, effect.Count);
             }
 
             GameTextManager.Instance.ShowDamage(result, context.HitPosition);

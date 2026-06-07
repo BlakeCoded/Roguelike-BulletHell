@@ -9,8 +9,8 @@ namespace Project.Player
 {
     public class PlayerController : Entity
     {
-
         [SerializeField] private PlayerInput input;
+        [SerializeField] private CameraController cameraMove;
         [SerializeField] private PlayerMovement movement;
         [SerializeField] private PlayerWeapons combat;
 
@@ -19,6 +19,7 @@ namespace Project.Player
             base.Awake();
 
             input = GetComponent<PlayerInput>();
+            cameraMove = GetComponent<CameraController>();
             movement = GetComponent<PlayerMovement>();
             combat = GetComponent<PlayerWeapons>();
         }
@@ -28,7 +29,7 @@ namespace Project.Player
             input.PollPlayerInput();
 
             movement.Move(input.MoveInput);
-            movement.RotateToMousePosition(input.MousePosition);
+            cameraMove.RotateToMousePosition(input.MousePosition);
 
             combat.Attack();
 

@@ -7,31 +7,9 @@ using static Helper;
 
 namespace Project.Player
 {
-    public class PlayerMovement : MonoBehaviour, IMovement
+    public class CameraController : MonoBehaviour
     {
         [SerializeField] Transform playerBody;
-        [SerializeField] float baseMoveSpeed = 5;
-        private float MoveSpeed => baseMoveSpeed + stats.GetStatValue(StatType.MoveSpeed);
-        public bool CanMove { get; set; }
-
-        private StatsComponent stats;
-
-        private void Awake()
-        {
-            stats = GetComponent<StatsComponent>();
-        }
-
-        private void Start()
-        {
-            CanMove = true;
-        }
-
-        public void Move(Vector2 direction)
-        {
-            if (CanMove == false || direction == Vector2.zero) return;
-
-            transform.MoveByXZ(MoveSpeed * GameTime.DeltaTime * direction);
-        }
 
         public void RotateToMousePosition(Vector2 position)
         {

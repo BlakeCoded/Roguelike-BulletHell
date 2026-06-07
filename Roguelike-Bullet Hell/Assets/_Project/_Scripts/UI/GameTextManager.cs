@@ -13,7 +13,7 @@ public class GameTextManager : MonoBehaviourSingleton<GameTextManager>
 
     public void ShowDamage(DamageResult result, Vector3 hitPosition)
     {
-        DamageTextUI text = PoolManager.Instance.Get(prefab, Vector3.zero, Quaternion.identity, canvas.transform);
+        DamageTextUI text = ObjectPoolManager.Get(prefab, Vector3.zero, Quaternion.identity, canvas.transform);
 
         text.Initialize(result, hitPosition);
     }

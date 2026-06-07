@@ -1759,6 +1759,7 @@ GameObject:
   - component: {fileID: 1143815244}
   - component: {fileID: 1143815243}
   - component: {fileID: 1143815242}
+  - component: {fileID: 1143815247}
   m_Layer: 0
   m_Name: Damageable (1)
   m_TagString: Untagged
@@ -1939,6 +1940,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1ddb21a67a2498045bdb201af35383fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1143815247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143815235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bd7f346ab2b4f43847db83de4e39bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1214737833
@@ -3180,10 +3193,6 @@ MonoBehaviour:
     StatType: 1
     Value: -1
     ModifierType: 0
-  buffs:
-  - {fileID: 11400000, guid: c01ffe13fad2c0f4dab6677028ed2191, type: 2}
-  - {fileID: 11400000, guid: 173cfd44050e4654fa621c672028553a, type: 2}
-  - {fileID: 11400000, guid: 41002a5e291b5c149bea93f1ac088306, type: 2}
 --- !u!65 &2023100258
 BoxCollider:
   m_ObjectHideFlags: 0

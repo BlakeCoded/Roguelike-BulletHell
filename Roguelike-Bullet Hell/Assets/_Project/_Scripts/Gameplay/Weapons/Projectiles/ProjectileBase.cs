@@ -43,7 +43,7 @@ public abstract class ProjectileBase : MonoBehaviour, IProjectile, IPoolable
         {
             if(!IsReleased)
             {
-                PoolManager.Instance.Release(gameObject);
+                ObjectPoolManager.Release(gameObject);
                 IsReleased = true;
             }
         }
@@ -63,7 +63,7 @@ public abstract class ProjectileBase : MonoBehaviour, IProjectile, IPoolable
 
             if (!IsReleased)
             {
-                PoolManager.Instance.Release(gameObject);
+                ObjectPoolManager.Release(gameObject);
                 IsReleased = true;
             }
         }

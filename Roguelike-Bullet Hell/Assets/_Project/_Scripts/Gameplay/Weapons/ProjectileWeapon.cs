@@ -11,7 +11,7 @@ public class ProjectileWeapon : WeaponInstance
 
     protected override void OnUse(AttackContext attackContext)
     {
-        ProjectileBase projectile = PoolManager.Instance.Get(projectilePrefab, firePoint.position, firePoint.rotation);
+        ProjectileBase projectile = ObjectPoolManager.Get(projectilePrefab, firePoint.position, firePoint.rotation);
 
         projectile.Initialize(attackContext);
     }

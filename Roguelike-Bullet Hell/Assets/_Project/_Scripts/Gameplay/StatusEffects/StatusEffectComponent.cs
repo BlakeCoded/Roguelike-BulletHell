@@ -37,7 +37,15 @@ namespace Project.Gameplay.Combat
 
         public void AddStatusEffect(StatusEffect effect)
         {
-            OnStatusEffectAdded(effect);
+            StatusEffect exisiting = statusEffects.OfType<StatusEffect>().FirstOrDefault();
+
+            if(exisiting == null)
+            {
+                OnStatusEffectAdded(effect);
+                return;
+            }
+
+            exisiting.Reapply(effect);
         }
 
         public void Clear()
