@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -129,7 +128,7 @@ namespace Project.Gameplay.Pooling
 
         private GameObject GetInternal(GameObject objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation, Transform parent = null)
         {
-            if (objectToSpawn is null)
+            if (objectToSpawn == null)
             {
                 Debug.LogError("Tried to spawn null object");
                 return null;
@@ -146,6 +145,36 @@ namespace Project.Gameplay.Pooling
 
             obj.transform.SetParent(parent);
             obj.transform.SetPositionAndRotation(spawnPosition, spawnRotation);
+            
+            obj.SetActive(true);
+
+            return obj;
+        }
+
+        private GameObject GetInternalUI(GameObject objectToSpawn, Transform parent)
+        {
+            if (objectToSpawn == null)
+            {
+                Debug.LogError("Tried to spawn null object");
+                return null;
+            }
+
+            if (!objectPools.ContainsKey(objectToSpawn))
+            {
+                CreatePool(objectToSpawn);
+            }
+
+            GameObject obj = objectPools[objectToSpawn].Get();
+
+            instanceToPrefab[obj] = objectToSpawn;
+
+            obj.transform.SetParent(parent, false);
+
+            RectTransform rt = obj.GetComponent<RectTransform>();
+            rt.anchoredPosition = Vector2.zero;
+            rt.localRotation = Quaternion.identity;
+            rt.localScale = Vector3.one;
+
             obj.SetActive(true);
 
             return obj;
@@ -164,9 +193,27 @@ namespace Project.Gameplay.Pooling
             return null;
         }
 
+        private T GetInternalUI<T>(GameObject objectToSpawn, Transform parent) where T : Component
+        {
+            GameObject obj = GetInternalUI(objectToSpawn, parent);
+
+            if(obj.TryGetComponent(out T component))
+            {
+                return component;
+            }
+
+            Debug.LogError($"{objectToSpawn.name} does not contain component {typeof(T)}");
+            return default;
+        }
+
         private T GetInternal<T>(T prefab, Vector3 spawnPosition, Quaternion spawnRotation, Transform parent = null) where T : Component
         {
             return GetInternal<T>(prefab.gameObject, spawnPosition, spawnRotation, parent);
+        }
+
+        private T GetInternalUI<T>(T prefab, Transform parent) where T : Component
+        {
+            return GetInternalUI<T>(prefab.gameObject, parent);
         }
 
         private void ReleaseInternal(GameObject obj)
@@ -187,7 +234,9 @@ namespace Project.Gameplay.Pooling
         public static void Get(GameObject objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation, Transform parent = null) => Instance.GetInternal(objectToSpawn, spawnPosition, spawnRotation, parent);
         public static T Get<T>(GameObject objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation, Transform parent = null) where T : Component => Instance.GetInternal<T>(objectToSpawn, spawnPosition, spawnRotation, parent);
         public static T Get<T>(T prefab, Vector3 spawnPosition, Quaternion spawnRotation, Transform parent = null) where T : Component => Instance.GetInternal<T>(prefab, spawnPosition, spawnRotation, parent);
+        public static void GetUI(GameObject objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation, Transform parent = null) => Instance.GetInternalUI(objectToSpawn, parent);
+        public static T GetUI<T>(GameObject objectToSpawn, Transform parent) where T : Component => Instance.GetInternalUI<T>(objectToSpawn, parent);
+        public static T GetUI<T>(T prefab, Transform parent) where T : Component => Instance.GetInternalUI<T>(prefab, parent);
         public static void Release(GameObject obj) => Instance.ReleaseInternal(obj);
-
     }
 }

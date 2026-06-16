@@ -8,6 +8,7 @@ namespace Project.Player
     {
         private PlayerControls inputActions;
 
+        public Vector2 MouseDelta { get; private set; }
         public Vector2 MousePosition { get; private set; }
         public Vector2 MoveInput {  get; private set; }
         public bool FirePressed { get; private set; }
@@ -20,11 +21,10 @@ namespace Project.Player
 
         public void PollPlayerInput()
         {
+            MouseDelta = inputActions.Player.Look.ReadValue<Vector2>();
             MousePosition = inputActions.Player.MousePosition.ReadValue<Vector2>();
             MoveInput = inputActions.Player.Move.ReadValue<Vector2>();
             FirePressed = inputActions.Player.Fire.IsPressed();
-
-            //Debug.Log(inputActions.Player.Move.activeControl);
         }
         
         private void OnDisable()

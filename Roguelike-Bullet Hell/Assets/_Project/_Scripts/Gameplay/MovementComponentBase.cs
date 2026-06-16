@@ -8,14 +8,14 @@ namespace Project.Gameplay.Movement
 {
     public abstract class MovementComponentBase : MonoBehaviour
     {
-        public bool CanMove { get; set; } = true;
-        public float MoveSpeed => stats.GetStatValue(StatType.MoveSpeed);
+        public abstract bool CanMove { get; set; }
+        public abstract float MoveSpeed { get; }
 
-        protected StatsComponent stats;
+        protected StatsComponent Stats;
 
         protected virtual void Awake()
         {
-            stats = GetComponent<StatsComponent>();
+            Stats = GetComponent<StatsComponent>();
         }
 
         public virtual void Move(Vector3 direction) { }

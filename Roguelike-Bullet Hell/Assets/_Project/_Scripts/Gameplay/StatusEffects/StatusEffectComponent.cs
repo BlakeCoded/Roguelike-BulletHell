@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace Project.Gameplay.Combat
 
         public void AddStatusEffect(StatusEffect effect)
         {
-            StatusEffect exisiting = statusEffects.OfType<StatusEffect>().FirstOrDefault();
+            StatusEffect exisiting = statusEffects.FirstOrDefault(x => x.GetType() == effect.GetType());
 
             if(exisiting == null)
             {

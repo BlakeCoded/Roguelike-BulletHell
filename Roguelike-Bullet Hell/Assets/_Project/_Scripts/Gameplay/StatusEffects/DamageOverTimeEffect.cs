@@ -8,20 +8,22 @@ namespace Project.Gameplay.Combat
     public abstract class DamageOverTimeEffect : StatusEffect
     {
         public float Damage;
+        protected DamageType DamageType;
         protected float BaseDamage;
         protected float TickRate;
-
         private float timer;
 
         protected DamageOverTimeEffect(
             CombatContext context, 
             float damage, 
             float duration, 
-            float tickRate) : base(context, duration)
+            float tickRate,
+            DamageType damageType) : base(context, duration)
         {
             Damage = damage;
             BaseDamage = damage;
             TickRate = tickRate;
+            DamageType = damageType;
         }
 
         public override void OnTick()
@@ -42,15 +44,7 @@ namespace Project.Gameplay.Combat
 
         public virtual void ApplyDamageTick()
         {
-            DamageResolver.ProcessHit(
-                new DamageContext(
-                    CombatContext,
-                    Damage,
-                    DamageResolver.EmptyOnHitEffects,
-                    false,
-                    CombatContext.Target.transform.position,
-                    Vector3.zero,
-                    0));
+            DamageResolver.ProcessDamage(DamageContext.CreateSimpleDamageContext(CombatContext, Damage, DamageType));
         }
     }
 }

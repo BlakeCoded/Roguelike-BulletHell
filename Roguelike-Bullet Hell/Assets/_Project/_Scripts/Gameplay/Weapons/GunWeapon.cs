@@ -14,7 +14,7 @@ namespace Project.Gameplay.Combat
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                if (hit.collider.TryGetComponent(out Entity target))
+                if (hit.collider.TryGetComponent(out CombatEntity target))
                 {
                     Vector3 hitPoint = hit.point;
 

@@ -6,11 +6,11 @@ namespace Project.Gameplay.Combat
 {
     public class Hurtbox : MonoBehaviour
     {
-        public Entity Owner { get; private set; }
+        public CombatEntity Owner { get; private set; }
 
         private void Awake()
         {
-            Owner = GetComponentInParent<Entity>();
+            Owner = GetComponentInParent<CombatEntity>();
         }
     }
 }

@@ -54,7 +54,7 @@ public abstract class ProjectileBase : MonoBehaviour, IProjectile, IPoolable
     // Add layers etc to only interact with, WORLD, ENVIRONMENT, ENEMY
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<Entity>(out Entity target))
+        if (other.TryGetComponent<CombatEntity>(out CombatEntity target))
         {
             DamageContext damageContext = DamageResolver.CreateDamageContext(AttackContext, target, cachedTransform.position,
                                                                             (other.transform.position - cachedTransform.position).normalized);

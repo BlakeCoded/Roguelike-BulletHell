@@ -28,9 +28,9 @@ MonoBehaviour:
   - Type: 6
     BaseValue: 0
   - Type: 7
-    BaseValue: 0
+    BaseValue: 0.5
   - Type: 8
-    BaseValue: 0
+    BaseValue: 1000000
   - Type: 9
     BaseValue: 0
   - Type: 10

@@ -10,37 +10,45 @@ namespace Project.Gameplay.Combat
     {
         public static readonly List<OnHitEffectEntry> EmptyOnHitEffects = new();
 
-        public static DamageContext CreateDamageContext(AttackContext context, Entity Target, Vector3 hitPosition, Vector3 hitDirection)
+        public static DamageContext CreateDamageContext(AttackContext context, CombatEntity Target, Vector3 hitPosition, Vector3 hitDirection)
         {
             bool isCrit = Random.value < context.CritChance * 0.01f;
 
-            float damage = isCrit ? context.Damage * context.CritDamage : context.Damage;
+            float damage = isCrit ? context.Damage * context.CritMultiplier : context.Damage;
 
             CombatContext combatContext = new(context.Owner, Target);
 
-            return new DamageContext(combatContext, damage, context.OnHitEffects, isCrit, hitPosition, hitDirection, context.Knockback);
+            return new DamageContext(combatContext, context.Damage, damage, DamageType.Physical, context.OnHitEffects, isCrit, hitPosition, hitDirection, context.Knockback);
         }
 
         public static void ProcessHit(DamageContext context)
         {
-            Entity target = context.CombatContext.Target;
+            CombatEntity target = context.CombatContext.Target;
 
-            DamageResult result = target.Health.TakeDamage(context);
+            DamageResult result = target.Health.TakeDamage(context); // calculate damage with armor / resistances etc..
 
-            if (result.DamageDealt <= 0) return; // change this later :)
+            if (result.DamageDealt <= 0) return;
 
-            // When Entity holds a movement component call knockback here 
             if (context.Knockback > 0f)
             {
                 // apply knockback
             }
 
-            foreach (OnHitEffectEntry effect in context.OnHitEffects)
+            foreach (OnHitEffectEntry entry in context.OnHitEffects)
             {
-                effect.Effect.Apply(result, effect.Count);
+                entry.Effect.Apply(result, entry.Count);
             }
 
-            GameTextManager.Instance.ShowDamage(result, context.HitPosition);
+            GameTextManager.SpawnDamageUiText(result, context.HitPosition);
+        }
+
+        public static void ProcessDamage(DamageContext context)
+        {
+            CombatEntity target = context.CombatContext.Target;
+
+            DamageResult damageResult = target.Health.TakeDamage(context);
+
+            GameTextManager.SpawnDamageUiText(damageResult, context.HitPosition);
         }
     }
 }

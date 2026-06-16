@@ -16,7 +16,7 @@ public class FPSDisplay : MonoBehaviour
         if (timer >= 0.25f) // Update 4 times per second
         {
             int fps = Mathf.RoundToInt(1f / GameTime.UnscaledDeltaTime);
-            fpsText.text = $"FPS: {fps}";
+            fpsText.text = fps.ToString();
             timer = 0f;
         }
     }

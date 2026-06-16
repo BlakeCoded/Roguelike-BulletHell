@@ -47,7 +47,7 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
-  m_FOVAxisMode: 0
+  m_FOVAxisMode: 1
   m_Iso: 200
   m_ShutterSpeed: 0.005
   m_Aperture: 16
@@ -67,7 +67,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 90
+  field of view: 58.715508
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -443,6 +443,8 @@ GameObject:
   - component: {fileID: 2541966354372716444}
   - component: {fileID: 2205886645094958075}
   - component: {fileID: 8991394036002782800}
+  - component: {fileID: 7328761176136004994}
+  - component: {fileID: 894103754023778137}
   m_Layer: 0
   m_Name: PlayerHolder
   m_TagString: Untagged
@@ -479,10 +481,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b255e0f5708dca459cc54767395a73e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  input: {fileID: 0}
-  cameraMove: {fileID: 0}
-  movement: {fileID: 0}
-  combat: {fileID: 0}
 --- !u!114 &648214006152370690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,8 +505,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3ceb15d933fdd44cbeff84027aa743b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerBody: {fileID: 5110806002430961725}
-  camera: {fileID: 0}
+  distanceFromTarget: 12
+  cameraSensitivity: 0.05
+  minPitch: -30
+  maxPitch: 80
+  focusTarget: {fileID: 5110806002430961725}
 --- !u!114 &6782502379892419894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -601,6 +602,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerBody: {fileID: 5110806002430961725}
+--- !u!114 &7328761176136004994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7907477774016188177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d29a9e3059b3543ac96e1bc8b045fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &894103754023778137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7907477774016188177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 531183e1272bfc04583f44b5e8a48aee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8951653065664086062
 GameObject:
   m_ObjectHideFlags: 0

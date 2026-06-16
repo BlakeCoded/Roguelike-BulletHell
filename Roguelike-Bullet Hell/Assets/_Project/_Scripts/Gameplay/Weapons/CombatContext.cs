@@ -7,12 +7,12 @@ namespace Project.Gameplay.Combat
 {
     public readonly struct CombatContext
     {
-        public Entity Owner { get; }
-        public Entity Target { get; }
+        public CombatEntity Owner { get; }
+        public CombatEntity Target { get; }
 
         public CombatContext(
-            Entity Owner,
-            Entity Target)
+            CombatEntity Owner,
+            CombatEntity Target)
         {
             this.Owner = Owner;
             this.Target = Target;

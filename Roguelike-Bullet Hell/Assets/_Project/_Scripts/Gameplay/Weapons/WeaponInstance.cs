@@ -11,15 +11,15 @@ namespace Project.Gameplay.Combat
 {
     public abstract class WeaponInstance : MonoBehaviour
     {
-        protected Entity Owner;
+        protected CombatEntity Owner;
         protected WeaponData data;
-        protected float lastUseTime;
         protected Transform firePoint;
 
         private bool statsInitialized = false;
-        private EffectContainer onHitEffects = new();
 
-        public virtual void Initialize(Entity owner, WeaponData data, Transform firePoint)
+        protected float lastUseTime;
+
+        public virtual void Initialize(CombatEntity owner, WeaponData data, Transform firePoint)
         {
             if (statsInitialized) return;
 
@@ -27,7 +27,7 @@ namespace Project.Gameplay.Combat
             this.data = data;
             this.firePoint = firePoint;
 
-            foreach (StatModifierData ModData in this.data.Modifiers)
+            foreach (StatModifierData ModData in data.Modifiers)
             {
                 AddModifier(ModData);
             }
@@ -40,34 +40,13 @@ namespace Project.Gameplay.Combat
             return Time.time >= lastUseTime + 1f / ClampAttacksPerSecond(Owner.Stats.GetStatValue(StatType.AttackSpeed));
         }
 
-        public void Use()
+        public void Use(AttackContext context)
         {
             if (!CanUse()) return;
-
-            AttackContext context = CreateAttackContext();
 
             lastUseTime = Time.time;
 
             OnUse(context);
-        }
-
-        public void AddOnHitEffect(IOnHitEffect effect)
-        {
-            onHitEffects.Add(effect);
-        }
-
-        protected AttackContext CreateAttackContext()
-        {
-            return new AttackContext(
-                Owner: Owner,
-                Damage: ClampDamage(Owner.Stats.GetStatValue(StatType.Damage)),
-                OnHitEffects: onHitEffects.CreateSnapshot(),
-                CritChance: ClampCritChance(Owner.Stats.GetStatValue(StatType.CritChance)),
-                CritDamage: ClampCritDamage(Owner.Stats.GetStatValue(StatType.CritDamage)),
-                ProjectileCount: ClampProjectileCount(Owner.Stats.GetStatValue(StatType.ProjectileCount)),
-                Size: ClampSize(Owner.Stats.GetStatValue(StatType.Size)),
-                Knockback: ClampKnockBack(Owner.Stats.GetStatValue(StatType.Knockback))
-                );
         }
 
         protected abstract void OnUse(AttackContext context);
