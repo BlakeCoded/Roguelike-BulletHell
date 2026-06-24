@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Interfaces;
 using OnHitEffect;
 using Project.Gameplay.Stats;
+using Project.Player;
 using UnityEngine;
 
 namespace Project.Gameplay.Combat
@@ -10,7 +11,7 @@ namespace Project.Gameplay.Combat
     [RequireComponent(typeof(StatsComponent))]
     public class PlayerWeaponHolder : MonoBehaviour
     {
-        private CombatEntity Owner;
+        private PlayerEntity Owner;
         private WeaponInstance currentWeapon;
 
         [SerializeField] private Transform weaponPosition;
@@ -19,7 +20,7 @@ namespace Project.Gameplay.Combat
 
         private void Awake()
         {
-            Owner = GetComponent<CombatEntity>();
+            Owner = GetComponent<PlayerEntity>();
         }
 
         private void Start()

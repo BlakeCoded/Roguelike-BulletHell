@@ -15,19 +15,16 @@ MonoBehaviour:
   WeaponName: Gun
   Modifiers:
   - StatType: 0
-    Value: 3
+    Value: 4
     ModifierType: 0
   - StatType: 1
     Value: 5
     ModifierType: 0
+  - StatType: 2
+    Value: 10
+    ModifierType: 0
   - StatType: 3
-    Value: 50
-    ModifierType: 0
-  - StatType: 4
-    Value: 0.05
+    Value: 0.1
     ModifierType: 1
-  - StatType: 5
-    Value: 1
-    ModifierType: 0
-  BehaviourPrefab: {fileID: 1511942705516122535, guid: 67a63e409074a1c418a68f099fdbc528,
+  InstancePrefab: {fileID: 1511942705516122535, guid: 67a63e409074a1c418a68f099fdbc528,
     type: 3}

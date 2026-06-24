@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Interfaces;
 using Project.Gameplay.Combat;
 using Project.Gameplay.Stats;
@@ -13,7 +11,6 @@ namespace Project.Gameplay.Health
     public class HealthComponent : MonoBehaviour, IDamageable, IHealable
     {
         private StatsComponent stats;
-
         public float CurrentHealth => currentHealth;
         private float currentHealth;
         public float MaxHealth => baseMaxHealth + stats.GetStatValue(StatType.BonusHealth);
@@ -21,11 +18,9 @@ namespace Project.Gameplay.Health
         public bool IsAlive => isAlive;
         private bool isAlive;
 
-
         // Events
-        //public event Action OnDamaged;
+        public event Action OnDamaged;
         public event Action OnDeath;
-        //public event Action OnKilledTarget;
 
         private void Awake()
         {
@@ -46,6 +41,8 @@ namespace Project.Gameplay.Health
 
             currentHealth -= finalDamage;
             currentHealth = Mathf.Max(0f, currentHealth);
+
+            OnDamaged?.Invoke();
 
             bool killedTarget = currentHealth <= 0f;
 
@@ -75,6 +72,8 @@ namespace Project.Gameplay.Health
 
         float CalaculateDamage(DamageContext context)
         {
+            // if resistances calculate here
+
             return context.Damage;
         }
     }

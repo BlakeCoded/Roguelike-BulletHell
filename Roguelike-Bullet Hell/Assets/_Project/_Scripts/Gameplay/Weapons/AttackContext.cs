@@ -20,15 +20,8 @@ namespace Project.Gameplay.Combat
         public float CritChance { get; }
         public float CritMultiplier { get; }
         
-        // Projectile Creation
-        public int ProjectileCount { get; }
-
-        // General Attack Scaling
-        public float Size { get; }
-
         // Utility
         public float Knockback { get; }
-        
 
         public AttackContext(
             CombatEntity Owner,
@@ -36,8 +29,6 @@ namespace Project.Gameplay.Combat
             List<OnHitEffectEntry> OnHitEffects,
             float CritChance,
             float CritMultiplier,
-            int ProjectileCount,
-            float Size,
             float Knockback)
         {
             this.Owner = Owner;
@@ -45,8 +36,6 @@ namespace Project.Gameplay.Combat
             this.OnHitEffects = OnHitEffects;
             this.CritChance = CritChance;
             this.CritMultiplier = CritMultiplier;
-            this.ProjectileCount = ProjectileCount;
-            this.Size = Size;
             this.Knockback = Knockback;
         }
     }
@@ -61,8 +50,6 @@ namespace Project.Gameplay.Combat
                 OnHitEffects: owner.CombatEffects.CreateOnHitEffectSnapshot(),
                 CritChance: ClampCritChance(owner.Stats.GetStatValue(StatType.CritChance)),
                 CritMultiplier: ClampCritMultiplier(owner.Stats.GetStatValue(StatType.CritDamage)),
-                ProjectileCount: ClampProjectileCount(owner.Stats.GetStatValue(StatType.ProjectileCount)),
-                Size: ClampSize(owner.Stats.GetStatValue(StatType.Size)),
                 Knockback: ClampKnockBack(owner.Stats.GetStatValue(StatType.Knockback))
                 );
         }

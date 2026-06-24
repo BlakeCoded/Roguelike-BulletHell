@@ -16,6 +16,9 @@ public class CombatEntity : MonoBehaviour
     // Positioning Data
     public Transform CachedTransform { get; private set; }
 
+    // Team
+    public Team Team { get; set; }
+
     // Health Data
     public HealthComponent Health {  get; private set; }
 

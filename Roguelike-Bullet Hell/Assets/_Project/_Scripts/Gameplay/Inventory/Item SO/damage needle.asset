@@ -15,6 +15,9 @@ MonoBehaviour:
   Name: Damage
   Description: 
   Icon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  ItemStats: []
+  ItemStats:
+  - StatType: 0
+    Value: 0.15
+    ModifierType: 1
   Effects:
   - {fileID: 11400000, guid: d38ff3da54a4ef64c988768ac6ba132c, type: 2}

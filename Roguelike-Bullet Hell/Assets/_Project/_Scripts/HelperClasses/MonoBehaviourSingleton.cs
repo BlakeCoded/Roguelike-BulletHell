@@ -76,22 +76,18 @@ namespace Project.Singleton
             }
         }
 
-        public override void OnBootstrapped()
+        protected virtual void OnInternalBootstrap()
         {
-            // set bootstrap logic
-            ConstructIfNeeded(this);
+            if (_Instance != this) return;
 
-            OnInit();
-        }
-
-        protected virtual void OnInit()
-        {
             DontDestroyOnLoad(gameObject);
         }
 
         private void Awake()
         {
             ConstructIfNeeded(this);
+
+            if (_Instance != this) return;
 
             OnAwake();
         }
@@ -137,7 +133,5 @@ namespace Project.Singleton
         {
             IsQuitting = true;
         }
-
-        public virtual void OnBootstrapped() { }
     }
 }

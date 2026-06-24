@@ -18,13 +18,10 @@ MonoBehaviour:
     Value: 20
     ModifierType: 0
   - StatType: 1
-    Value: 0.5
-    ModifierType: 0
-  - StatType: 4
-    Value: 1
+    Value: 2
     ModifierType: 0
   - StatType: 5
-    Value: 1
+    Value: 25
     ModifierType: 0
   - StatType: 6
     Value: 10
@@ -33,7 +30,7 @@ MonoBehaviour:
     Value: 25
     ModifierType: 0
   - StatType: 3
-    Value: 0.15
+    Value: 0.5
     ModifierType: 1
   InstancePrefab: {fileID: 4561443180814416051, guid: 9a290cbb3629ba043b8a433630f2b7fb,
     type: 3}

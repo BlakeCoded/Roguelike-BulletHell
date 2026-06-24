@@ -24,7 +24,7 @@ MonoBehaviour:
   - Type: 4
     BaseValue: 1
   - Type: 5
-    BaseValue: 10
+    BaseValue: 500
   - Type: 6
     BaseValue: 0
   - Type: 7

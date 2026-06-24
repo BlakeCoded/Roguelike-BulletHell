@@ -2,48 +2,98 @@ using Interfaces;
 using Project.Gameplay.UI;
 using Project.Singleton;
 using Project.UI;
-using Project.Systems.Keybinds;
 using UnityEngine;
 using Project.Player;
+using Collision;
 
-public class GameManager : MonoBehaviourSingleton<GameManager>, IInitializable
+/// <summary>
+/// Central game coordinator responsible for initializing and managing
+/// global game systems during startup and runtime.
+/// </summary>
+public class GameManager : MonoBehaviourSingleton<GameManager>, IBootstrap
 {
+    [Header("BOOTSTRAP_MANAGERS")]
+    [SerializeField] MonoBehaviour[] bootManagers;
+
     [SerializeField] GameObject playerPrefab;
     [SerializeField] StatsPanelUI statsPanel;
-    [SerializeField] PlayerTabPanel characterUI;
     [SerializeField] InventoryPanel inventoryPanel;
 
     PlayerEntity PlayerEntity;
 
-    public bool IsInitialized {  get; private set; }
+    public CollisionSystem CollisionSystem { get; private set; }
+    private const float cellSize = 3f;
 
     protected override void OnAwake()
     {
         base.OnAwake();
 
-        Init();
+        Initialize();
     }
 
-    public void Init() // eventually init core systems and assign everything in start.
+    public void Initialize()
     {
-        IsInitialized = true;
+        CollisionSystem = new CollisionSystem(cellSize);
 
-        GameObject player = Instantiate(playerPrefab, new Vector3(0,1,0), Quaternion.identity);
+        foreach (var manager in bootManagers)
+        {
+            if (manager is IBootstrap bootstrap)
+            {
+                bootstrap.Initialize();
+            }
+        }
+    }
+
+    private void Start()
+    {
+        GameObject player = Instantiate(playerPrefab, new Vector3(0, 1, 0), Quaternion.identity);
 
         PlayerEntity = player.GetComponent<PlayerEntity>();
 
         statsPanel.Initialize(PlayerEntity.Stats);
 
         inventoryPanel.Init(PlayerEntity);
+
+        CursorManager.Lock();
     }
 
-    private void Start()
+    private void Update()
     {
-        InputManager.Subscribe(characterUI.HandleInput);
+        ProjectileSystem.Tick(GameTime.DeltaTime);
+        CollisionSystem.Tick();
     }
 
-    private void OnDisable()
+    #region COLLISION_SYSTEM
+
+    public static void RegisterCollisionObject(CollisionObject obj)
     {
-        InputManager.Unsubscribe(characterUI.HandleInput);
+        Instance.InternalRegisterCollisionObject(obj);
     }
+    public static void UnregisterCollisionObject(CollisionObject obj)
+    {
+        Instance.InternalUnregisterCollisionObject(obj);
+    }
+
+    public static bool Raycast(Vector3 origin, Vector3 direction, float distance, CollisionLayer collisionLayer, out RaycastHitData hit)
+    {
+        if (IsQuitting)
+        {
+            hit = default;
+            return false;
+        }
+
+        return Instance.CollisionSystem.Raycast(origin, direction.normalized, distance, collisionLayer, out hit);
+    }
+
+    private void InternalRegisterCollisionObject(CollisionObject obj)
+    {
+        CollisionSystem.Register(obj);
+    }
+
+    private void InternalUnregisterCollisionObject(CollisionObject obj)
+    {
+        CollisionSystem.Unregister(obj);
+    }
+
+    #endregion COLLISION_SYSTEM
 }

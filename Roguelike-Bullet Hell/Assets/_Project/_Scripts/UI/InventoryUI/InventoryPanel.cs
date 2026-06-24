@@ -33,7 +33,7 @@ namespace Project.Gameplay.UI
             
         }
 
-        public void RebuildUiDisaplay()
+        private void RebuildUiDisaplay()
         {
             if (!isDirty) return;
 

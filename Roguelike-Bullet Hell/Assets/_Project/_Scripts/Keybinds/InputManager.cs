@@ -1,18 +1,15 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Project.Singleton;
-using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Project.Systems.Keybinds
 {
     public class InputManager : MonoBehaviourSingleton<InputManager>
     {
-        public event Action<string> OnActionPreformed;
-
-        private PlayerControls input;
+        private event Action<string> OnActionPreformed;
         private Dictionary<string, InputAction> actions;
+        private PlayerControls input;
 
         private void Awake()
         {
@@ -31,31 +28,10 @@ namespace Project.Systems.Keybinds
             OnActionPreformed?.Invoke(context.action.name);
         }
 
-        private void OnEnable()
-        {
-            input.Enable();
-
-            foreach (var action in actions.Values)
-            {
-                action.performed += HandleAction;
-            }
-        }
-
-        private void OnDisable()
-        {
-            foreach (var action in actions.Values)
-            {
-                action.performed -= HandleAction;
-            }
-
-            input.Disable();
-        }
-
         public static void Subscribe(Action<string> callback)
         {
             Instance.InternalSubscribe(callback);
         }
-
         public static void Unsubscribe(Action<string> callback)
         {
             if(Instance == null) return;
@@ -65,11 +41,30 @@ namespace Project.Systems.Keybinds
 
         private void InternalSubscribe(Action<string> callback)
         {
-            Instance.OnActionPreformed += callback;
+            OnActionPreformed += callback;
         }
         private void InternalUnsubscribe(Action<string> callback)
         {
-            Instance.OnActionPreformed -= callback;
+            OnActionPreformed -= callback;
+        }
+
+        private void OnEnable()
+        {
+            input.Enable();
+
+            foreach (var action in actions.Values)
+            {
+                action.performed += HandleAction;
+            }
+        }
+        private void OnDestroy()
+        {
+            foreach (var action in actions.Values)
+            {
+                action.performed -= HandleAction;
+            }
+
+            input.Disable();
         }
     }
 }

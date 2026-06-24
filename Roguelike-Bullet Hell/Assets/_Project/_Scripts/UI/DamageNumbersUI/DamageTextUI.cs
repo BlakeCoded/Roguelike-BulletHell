@@ -22,6 +22,13 @@ namespace Project.UI
         private Transform cachedTransform;
         private Vector3 position;
 
+        private float maxSize = 1f;
+        private float minSize = 0.4f;
+        private float maxDistance = 75f;
+        private float distance;
+
+        private float displayDamage;
+
         private void Awake()
         {
             cachedTransform = transform;
@@ -35,18 +42,23 @@ namespace Project.UI
 
             text.text = result.DamageDealt.ToString("0");
 
-            if(!result.IsCritical)
+            ScaleTextSizeFromDistance();
+
+            if (!result.IsCritical)
             {
                 text.color = normalColour;
-                return;
             }
-
-            text.color = critColour;
+            else
+            {
+                text.color = critColour;
+            }
         }
 
         private void Update()
         {
             position += 2 * GameTime.DeltaTime * Vector3.up;
+
+            ScaleTextSizeFromDistance();
 
             cachedTransform.position = MainCamera.WorldToScreenPoint(this.position);
 
@@ -61,6 +73,18 @@ namespace Project.UI
                 }
             }
         }
+
+        private void ScaleTextSizeFromDistance()
+        {
+            distance = Vector3.Distance(MainCamera.transform.position, position);
+
+            float t = Mathf.Clamp01(distance / maxDistance);
+
+            float scale = Mathf.Lerp(maxSize, minSize, t);
+
+            transform.localScale = scale * Vector3.one;
+        }
+
         public void OnSpawn()
         {
             timer = 0;

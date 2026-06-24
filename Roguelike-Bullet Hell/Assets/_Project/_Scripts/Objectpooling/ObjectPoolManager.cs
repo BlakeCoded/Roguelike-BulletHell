@@ -6,45 +6,34 @@ using Project.Singleton;
 
 namespace Project.Gameplay.Pooling
 {
-    public class ObjectPoolManager : MonoBehaviourSingleton<ObjectPoolManager>, IInitializable
+    /// <summary>
+    /// Manages reusable object pools for efficient spawning and recycling
+    /// of gameplay and UI objects.
+    /// </summary>
+    public class ObjectPoolManager : MonoBehaviourSingleton<ObjectPoolManager>, IBootstrap
     {
-        public bool IsInitialized { get; private set; } // Used for bootstrap in future
-
         [SerializeField] private List<GameObject> objectsToPreInitialize;
 
         private Dictionary<GameObject, ObjectPool<GameObject>> objectPools; // Stores the Object Pools
-        private Dictionary<GameObject, GameObject> instanceToPrefab; // Stores a clone Refernce to the original prefab
+        private Dictionary<GameObject, GameObject> instanceToPrefab; // Stores a clone Reference to the original prefab
 
         private GameObject poolHolder;
 
         const int MIN_POOL_CAPACITY = 10;
         const int MAX_POOL_CAPACITY = 1000;
 
-        public override void OnBootstrapped()
-        {
-            base.OnBootstrapped();
+        private bool isPrewarming;
 
-            Init();
+        public void Initialize()
+        {
+            OnInternalBootstrap();
         }
 
-        protected override void OnAwake()
+        protected override void OnInternalBootstrap()
         {
-            base.OnAwake();
-
-            Init();
-        }
-
-        public void Init()
-        {
-            if(IsInitialized) return;
+            base.OnInternalBootstrap();
 
             Setup();
-
-            PreInitializeObjectPool(objectsToPreInitialize, MIN_POOL_CAPACITY);
-
-            objectsToPreInitialize = null;
-
-            IsInitialized = true;
         }
 
         private void Setup()
@@ -54,10 +43,16 @@ namespace Project.Gameplay.Pooling
 
             poolHolder = new GameObject("Object Pools");
             poolHolder.transform.SetParent(transform);
+
+            PreInitializeObjectPool(objectsToPreInitialize, MIN_POOL_CAPACITY);
+
+            objectsToPreInitialize = null;
         }
 
         private void PreInitializeObjectPool(List<GameObject> prefabs, int count)
         {
+            isPrewarming = true;
+
             foreach (GameObject prefab in prefabs)
             {
                 if(!objectPools.ContainsKey(prefab))
@@ -78,6 +73,8 @@ namespace Project.Gameplay.Pooling
                     objectPools[prefab].Release(obj);
                 }
             }
+
+            isPrewarming = false;
         }
 
         private void CreatePool(GameObject prefab)
@@ -106,13 +103,21 @@ namespace Project.Gameplay.Pooling
 
         private void OnGetObject(GameObject obj)
         {
-            obj.GetComponent<IPoolable>()?.OnSpawn();
+            if(!isPrewarming)
+            {
+                obj.GetComponent<IPoolable>()?.OnSpawn();
+            }
+            
             obj.SetActive(true);
         }
 
         private void OnReleaseObject(GameObject obj)
         {
-            obj.GetComponent<IPoolable>()?.OnDespawn();
+            if(!isPrewarming)
+            {
+                obj.GetComponent<IPoolable>()?.OnDespawn();
+            }
+            
             obj.SetActive(false);
         }
 

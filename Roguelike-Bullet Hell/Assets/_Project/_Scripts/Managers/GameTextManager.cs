@@ -1,25 +1,52 @@
-using System.Collections;
-using System.Collections.Generic;
 using Project.Gameplay.Pooling;
 using Project.Gameplay.Combat;
 using Project.UI;
 using UnityEngine;
 using Project.Singleton;
+using System.Collections.Generic;
 
 public class GameTextManager : MonoBehaviourSingleton<GameTextManager>
 {
     [SerializeField] DamageTextUI prefab;
     [SerializeField] Canvas canvas;
 
+    //private Dictionary<CombatEntity, DamageTextUI> ActiveDamage = new();
+
+    //public void RemoveDamageTextUI(CombatEntity entity)
+    //{
+    //    if(ActiveDamage.ContainsKey(entity))
+    //    {
+    //        ActiveDamage.Remove(entity);
+    //    }
+    //}
+
+    //private void ShowDamage(DamageResult result, Vector3 hitPosition)
+    //{
+    //    if(!ActiveDamage.TryGetValue(result.CombatContext.Target, out DamageTextUI damageTextUI))
+    //    {
+    //        damageTextUI = ObjectPoolManager.GetUI<DamageTextUI>(prefab, canvas.transform);
+
+    //        damageTextUI.Initialize(result, hitPosition);
+    //    }
+
+    //    damageTextUI.UpdateDamageNumber(result.DamageDealt);
+    //}
+
     private void ShowDamage(DamageResult result, Vector3 hitPosition)
     {
-        DamageTextUI text = ObjectPoolManager.Get(prefab, Vector3.zero, Quaternion.identity, canvas.transform);
+        DamageTextUI damageTextUI = ObjectPoolManager.GetUI<DamageTextUI>(prefab, canvas.transform);
 
-        text.Initialize(result, hitPosition);
+        damageTextUI.Initialize(result, hitPosition);
     }
 
-    public static void SpawnDamageUiText(DamageResult result, Vector3 hitPosition)
+
+    private void OnEnable()
     {
-        Instance.ShowDamage(result, hitPosition);
+        CombatEvents.OnDamageDealt += ShowDamage;
+    }
+
+    private void OnDisable()
+    {
+        CombatEvents.OnDamageDealt -= ShowDamage;
     }
 }

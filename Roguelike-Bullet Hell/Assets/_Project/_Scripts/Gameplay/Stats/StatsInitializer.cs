@@ -4,37 +4,25 @@ using Interfaces;
 using Project.Gameplay.Stats;
 using UnityEngine;
 
-public class StatsInitializer : MonoBehaviour, IInitializable
+public class StatsInitializer : MonoBehaviour
 {
     [SerializeField] StatsData statsData;
 
-    public bool IsInitialized => _isInitialized;
-    private bool _isInitialized = false;
-
-    private StatsComponent stats;
-
     private void Awake()
     {
-        Init(GetComponent<StatsComponent>());
+        Initialize(GetComponent<StatsComponent>());
     }
 
-    public void Init(StatsComponent stats)
+    public void Initialize(StatsComponent stats)
     {
-        _isInitialized = true;
-
-        foreach (var sd in statsData.stats)
+        foreach (StatDefinition sd in statsData.stats)
         {
             stats.SetBaseStat(sd.Type, sd.BaseValue);
         }
 
-        foreach (var sd in statsData.modifiers)
+        foreach (StatModifierData modifier in statsData.modifiers)
         {
-            stats.AddStatModifier(sd.StatType, new StatModifier(sd.ModifierType, sd.Value));
+            stats.AddStatModifier(modifier.StatType, new StatModifier(modifier.ModifierType, modifier.Value));
         }
-    }
-
-    public void Init()
-    {
-        
     }
 }

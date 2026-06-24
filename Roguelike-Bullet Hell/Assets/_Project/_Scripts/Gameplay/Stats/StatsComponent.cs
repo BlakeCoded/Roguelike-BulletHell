@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
 using Interfaces;
-using System.ComponentModel;
 
 namespace Project.Gameplay.Stats
 {
@@ -59,7 +56,7 @@ namespace Project.Gameplay.Stats
                 stat = new Stat(defaultValue);
                 stats[type] = stat;
             }
-
+            float v = stat.Value;
             return stat;
         }
 

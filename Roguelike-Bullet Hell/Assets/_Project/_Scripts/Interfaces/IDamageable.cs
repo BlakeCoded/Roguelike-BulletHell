@@ -8,6 +8,5 @@ namespace Interfaces
     public interface IDamageable
     {
         DamageResult TakeDamage(DamageContext context);
-        void Heal(float amount);
     }
 }

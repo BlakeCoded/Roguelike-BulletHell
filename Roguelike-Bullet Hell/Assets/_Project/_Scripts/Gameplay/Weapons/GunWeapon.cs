@@ -16,13 +16,9 @@ namespace Project.Gameplay.Combat
             {
                 if (hit.collider.TryGetComponent(out CombatEntity target))
                 {
-                    Vector3 hitPoint = hit.point;
-
-                    DamageContext damageContext = DamageResolver.CreateDamageContext(attackContext, target, hitPoint, (hit.transform.position - hitPoint).normalized);
+                    DamageContext damageContext = DamageResolver.CreateDamageContext(attackContext, target, hit.point, (hit.transform.position - hit.point).normalized);
                         
                     DamageResolver.ProcessHit(damageContext);
-
-                    // crit sound, etc
                 }
             }
         }

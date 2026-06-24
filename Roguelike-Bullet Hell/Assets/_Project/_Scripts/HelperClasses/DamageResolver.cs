@@ -1,11 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
-using Interfaces;
-using Project.Gameplay.Combat;
 using UnityEngine;
 
 namespace Project.Gameplay.Combat
 {
+    /// <summary>
+    /// Handles combat damage calculation and converts attack data into
+    /// a final DamageResult that can be applied to a target.
+    /// </summary>
     public static class DamageResolver
     {
         public static readonly List<OnHitEffectEntry> EmptyOnHitEffects = new();
@@ -25,9 +26,9 @@ namespace Project.Gameplay.Combat
         {
             CombatEntity target = context.CombatContext.Target;
 
-            DamageResult result = target.Health.TakeDamage(context); // calculate damage with armor / resistances etc..
+            DamageResult damageResult = target.Health.TakeDamage(context); // calculate damage with armor / resistances etc..
 
-            if (result.DamageDealt <= 0) return;
+            if (damageResult.DamageDealt <= 0f) return;
 
             if (context.Knockback > 0f)
             {
@@ -36,10 +37,10 @@ namespace Project.Gameplay.Combat
 
             foreach (OnHitEffectEntry entry in context.OnHitEffects)
             {
-                entry.Effect.Apply(result, entry.Count);
+                entry.Effect.Apply(damageResult, entry.Count);
             }
 
-            GameTextManager.SpawnDamageUiText(result, context.HitPosition);
+            CombatEvents.RaiseDamageDealt(damageResult, context.HitPosition);
         }
 
         public static void ProcessDamage(DamageContext context)
@@ -48,7 +49,7 @@ namespace Project.Gameplay.Combat
 
             DamageResult damageResult = target.Health.TakeDamage(context);
 
-            GameTextManager.SpawnDamageUiText(damageResult, context.HitPosition);
+            CombatEvents.RaiseDamageDealt(damageResult, context.HitPosition);
         }
     }
 }

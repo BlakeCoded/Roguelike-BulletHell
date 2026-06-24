@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using Project.Gameplay.Stats;
 using UnityEngine;
+using Project.Gameplay.Stats;
 using Project.Gameplay.Pooling;
 using Project.Gameplay.Combat;
+using Project.Player;
 
 public class ProjectileWeapon : WeaponInstance
 {
@@ -13,6 +12,9 @@ public class ProjectileWeapon : WeaponInstance
     {
         ProjectileBase projectile = ObjectPoolManager.Get(projectilePrefab, firePoint.position, firePoint.rotation);
 
-        projectile.Initialize(attackContext);
+        float projectileSpeed = Owner.Stats.GetStatValue(StatType.ProjectileSpeed);
+        float projectileSize = Owner.Stats.GetStatValue(StatType.Size);
+
+        projectile.Initialize(attackContext, projectileSpeed, projectileSize);
     }
 }

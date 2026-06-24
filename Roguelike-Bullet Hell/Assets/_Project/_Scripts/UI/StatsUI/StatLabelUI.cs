@@ -27,9 +27,9 @@ namespace Project.UI
             stat.OnValueChanged += UpdateValue;
         }
 
-        private void UpdateValue(float  value)
+        private void UpdateValue(float value)
         {
-            valueText.text = $"{statType}: {value}";
+            valueText.text = $"{statType}: {value:0.##}";
         }
 
         private void OnDestroy()

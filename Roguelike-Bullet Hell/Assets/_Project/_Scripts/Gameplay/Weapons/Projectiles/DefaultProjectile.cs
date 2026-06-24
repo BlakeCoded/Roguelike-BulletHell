@@ -13,6 +13,6 @@ public class DefaultProjectile : ProjectileBase
 
     protected override void HandleMovement()
     {
-        cachedTransform.position += Time.deltaTime * velocity;
+        cachedTransform.position += GameTime.DeltaTime * velocity;
     }
 }

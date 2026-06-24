@@ -12,6 +12,8 @@ namespace Project.Player
         {
             base.Awake();
 
+            Team = Team.Player;
+
             Input = GetComponent<PlayerInput>();
             CameraController = GetComponent<PlayerCameraController>();
             PlayerWeapons = GetComponent<PlayerWeaponHolder>();
@@ -23,17 +25,17 @@ namespace Project.Player
 
             Movement.Move(Input.MoveInput);
 
-            PlayerWeapons.Attack();
-
             if (Input.FirePressed)
             {
-                //PlayerWeapons.Attack();
+                PlayerWeapons.Attack();
             }
+
+            
         }
 
         private void LateUpdate()
         {
-            CameraController.RotateAroundTarget(Input.MouseDelta);
+            CameraController.CameraUpdate(Input.MouseDelta);
         }
 
         // Use for physics based updates
