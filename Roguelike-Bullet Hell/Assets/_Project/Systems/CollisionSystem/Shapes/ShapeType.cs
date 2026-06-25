@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Collision
 {
+    [System.Serializable]
     public enum ShapeType
     {
         Sphere,

@@ -20,6 +20,8 @@ namespace Project.Gameplay.Combat
 
             float damage = result.PreModifierDamage * 0.1f * count;
 
+            if(damage <= 1f) damage = 1f;
+
             BurnStatusEffect burn = new BurnStatusEffect(combatContext, damage, Duration, TickRate);
 
             combatContext.Target.StatusEffects.AddStatusEffect(burn);

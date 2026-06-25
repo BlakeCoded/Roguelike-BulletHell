@@ -13,7 +13,7 @@ namespace Collision
         private readonly List<Vector3Int> cellBuffer = new();
         private readonly HashSet<CollisionObject> NoDuplicateObjects = new();
 
-        private readonly float CELLSIZE;
+        public readonly float CELLSIZE;
 
         public SpatialGrid(float cellSize)
         {
@@ -79,7 +79,27 @@ namespace Collision
             results.AddRange(NoDuplicateObjects);
         }
 
-        public void GetObjectsAlongRay(Vector3 origin, Vector3 direction, float distance, List<CollisionObject> results)
+        public void GetObjectsFromWorldPosition(Vector3 origin, List<CollisionObject> results)
+        {
+            results.Clear();
+
+            Vector3Int cell = WorldToCell(origin);
+
+            if (!cells.TryGetValue(cell, out var list)) return;
+
+            results.AddRange(list);
+        }
+
+        public void GetObjectsFromCell(Vector3Int cell, List<CollisionObject> results)
+        {
+            results.Clear();
+
+            if(!cells.TryGetValue(cell, out var list)) return;
+
+            results.AddRange(list);
+        }
+
+        public void GetAllObjectsAlongRay(Vector3 origin, Vector3 direction, float distance, List<CollisionObject> results)
         {
             results.Clear();
             NoDuplicateObjects.Clear();

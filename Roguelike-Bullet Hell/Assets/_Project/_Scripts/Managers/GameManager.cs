@@ -5,6 +5,7 @@ using Project.UI;
 using UnityEngine;
 using Project.Player;
 using Collision;
+using System.Collections.Generic;
 
 /// <summary>
 /// Central game coordinator responsible for initializing and managing
@@ -65,15 +66,6 @@ public class GameManager : MonoBehaviourSingleton<GameManager>, IBootstrap
 
     #region COLLISION_SYSTEM
 
-    public static void RegisterCollisionObject(CollisionObject obj)
-    {
-        Instance.InternalRegisterCollisionObject(obj);
-    }
-    public static void UnregisterCollisionObject(CollisionObject obj)
-    {
-        Instance.InternalUnregisterCollisionObject(obj);
-    }
-
     public static bool Raycast(Vector3 origin, Vector3 direction, float distance, CollisionLayer collisionLayer, out RaycastHitData hit)
     {
         if (IsQuitting)
@@ -83,6 +75,26 @@ public class GameManager : MonoBehaviourSingleton<GameManager>, IBootstrap
         }
 
         return Instance.CollisionSystem.Raycast(origin, direction.normalized, distance, collisionLayer, out hit);
+    }
+
+    public static bool RaycastAll(Vector3 origin, Vector3 direction, float distance, CollisionLayer collisionLayer, out List<RaycastHitData> hits)
+    {
+        if (IsQuitting)
+        {
+            hits = default;
+            return false;
+        }
+
+        return Instance.CollisionSystem.RaycastAll(origin, direction.normalized, distance, collisionLayer, out hits);
+    }
+
+    public static void RegisterCollisionObject(CollisionObject obj)
+    {
+        Instance.InternalRegisterCollisionObject(obj);
+    }
+    public static void UnregisterCollisionObject(CollisionObject obj)
+    {
+        Instance.InternalUnregisterCollisionObject(obj);
     }
 
     private void InternalRegisterCollisionObject(CollisionObject obj)

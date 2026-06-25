@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,9 @@ namespace Collision
 {
     public static class CollisionMatrix
     {
-        private static bool[,] matrix = new bool[5, 5];
+        private static readonly int LayerCount = Enum.GetValues(typeof(CollisionLayer)).Length;
+
+        private static bool[,] matrix = new bool[LayerCount, LayerCount];
 
         static CollisionMatrix()
         {

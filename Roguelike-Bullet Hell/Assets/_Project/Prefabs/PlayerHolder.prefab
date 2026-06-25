@@ -600,7 +600,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPosition: {fileID: 3011635977435228245}
   weaponFirePoint: {fileID: 5553140454713769125}
-  StartingWeapon: {fileID: 11400000, guid: e3b4963063c569f4e96958bfe9be1889, type: 2}
+  StartingWeapon: {fileID: 11400000, guid: 59f8eb8c304d9e94eac7241b0a38d2df, type: 2}
 --- !u!114 &4277796254581021239
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,6 +14,8 @@ namespace Collision
         private readonly List<CollisionObject> pendingAdditions = new();
         private readonly List<CollisionObject> pendingRemovals = new();
         private readonly List<CollisionEvent> collisionEvents = new();
+        private readonly HashSet<CollisionObject> testedObjects = new();
+        private int currentRaycastId = int.MinValue;
 
         public CollisionSystem(float cellSize)
         {
@@ -119,72 +121,85 @@ namespace Collision
         public bool Raycast(Vector3 origin, Vector3 direction, float distance, CollisionLayer collisionLayer, out RaycastHitData hit)
         {
             hit = default;
+            testedObjects.Clear();
+            currentRaycastId++;
+
+            bool hitFound = false;
+            float closestDistance = distance;
+            CollisionObject closestObject = null;
+
+            GridRayTraversal traversal = new GridRayTraversal(origin, direction, grid.CELLSIZE);
+
+            while (traversal.DistanceTravelled < closestDistance)
+            {
+                grid.GetObjectsFromCell(traversal.CurrentCell, results);
+
+                foreach (CollisionObject other in results)
+                {
+                    if(other.LastRayCastId == currentRaycastId) continue;
+
+                    other.LastRayCastId = currentRaycastId;
+
+                    if (!other.Active) continue;
+
+                    if (!CollisionMatrix.CanCollide(collisionLayer, other.Layer)) continue;
+
+                    if (RayShapeCollision.Test(origin, direction, closestDistance, other.Position, other.Rotation, other.CollisionShape, out float hitDistance))
+                    {
+                        if (hitDistance < closestDistance)
+                        {
+                            closestObject = other;
+                            closestDistance = hitDistance;
+                            hitFound = true;
+                        }
+                    }
+                }
+
+                traversal.Step();
+            }
+
+            if(hitFound)
+            {
+                hit = new RaycastHitData
+                {
+                    CollisionObject = closestObject,
+                    HitDistance = closestDistance,
+                    HitPoint = origin + direction * closestDistance
+                };
+            }
+
+            return hitFound;
+        }
+
+        public bool RaycastAll(Vector3 origin, Vector3 direction, float distance, CollisionLayer collisionLayer, out List<RaycastHitData> hits)
+        {
+            hits = default;
 
             bool foundHit = false;
             float closestDistance = distance;
 
-            grid.GetObjectsAlongRay(origin, direction, distance, results);
+            grid.GetAllObjectsAlongRay(origin, direction, distance, results);
 
             foreach (CollisionObject other in results)
             {
-                if (!other.Active)
-                    continue;
+                if (!other.Active) continue;
 
-                // Filter
                 if (!CollisionMatrix.CanCollide(collisionLayer, other.Layer)) continue;
 
-                if (RayShapeCollision.Test(
-                    origin,
-                    direction,
-                    distance,
-                    other.CollisionShape,
-                    other.Position,
-                    out float hitDistance))
+                if (RayShapeCollision.Test(origin, direction, distance, other.Position, other.Rotation, other.CollisionShape, out float hitDistance))
                 {
-                    if (hitDistance < closestDistance)
+                    RaycastHitData hit = new RaycastHitData
                     {
-                        closestDistance = hitDistance;
+                        CollisionObject = other,
+                        HitDistance = hitDistance,
+                        HitPoint = origin + direction * hitDistance
+                    };
 
-                        hit = new RaycastHitData
-                        {
-                            CollisionObject = other,
-                            HitDistance = hitDistance,
-                            HitPoint = origin + direction * hitDistance
-                        };
+                    hits.Add(hit);
 
-                        foundHit = true;
-                    }
+                    foundHit = true;
                 }
             }
-
-            //foreach (CollisionObject other in collisionObjects)
-            //{
-            //    if (!other.Active)
-            //        continue;
-
-            //    if (RayShapeCollision.Test(
-            //        origin,
-            //        direction,
-            //        distance,
-            //        other.CollisionShape,
-            //        other.Position,
-            //        out float hitDistance))
-            //    {
-            //        if (hitDistance < closestDistance)
-            //        {
-            //            closestDistance = hitDistance;
-
-            //            hit = new RaycastHitData
-            //            {
-            //                CollisionObject = other,
-            //                HitDistance = hitDistance,
-            //                HitPoint = origin + direction * hitDistance
-            //            };
-
-            //            foundHit = true;
-            //        }
-            //    }
-            //}
 
             return foundHit;
         }

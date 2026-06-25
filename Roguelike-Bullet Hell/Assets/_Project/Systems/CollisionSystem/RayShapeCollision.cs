@@ -6,7 +6,7 @@ namespace Collision
 {
     public static class RayShapeCollision
     {
-        public static bool Test(Vector3 origin, Vector3 direction, float maxDistance, CollisionShape shape, Vector3 position, out float hitDistance)
+        public static bool Test(Vector3 origin, Vector3 direction, float maxDistance, Vector3 position, Quaternion rotation, CollisionShape shape, out float hitDistance)
         {
             switch(shape.Type)
             {
@@ -14,7 +14,7 @@ namespace Collision
                     return RaySphere(origin, direction, maxDistance, position, shape.Radius,  out hitDistance);
 
                 case ShapeType.Box:
-                    return RayBox(origin, direction, maxDistance, position, shape.HalfExtents, out hitDistance);
+                    return RayBox(origin, direction, maxDistance, position, rotation, shape.HalfExtents, out hitDistance);
 
                 case ShapeType.Capsule:
                     hitDistance = 0;
@@ -53,55 +53,58 @@ namespace Collision
             return true;
         }
 
-        private static bool RayBox(Vector3 origin, Vector3 direction, float maxDistance, Vector3 boxCenter, Vector3 halfExtents, out float hitDistance)
+        private static bool RayBox(Vector3 origin, Vector3 direction, float maxDistance, Vector3 boxCenter, Quaternion rotation, Vector3 halfExtents, out float hitDistance)
         {
             hitDistance = 0f;
 
-            Vector3 min = boxCenter - halfExtents;
-            Vector3 max = boxCenter + halfExtents;
+            Vector3 localOrigin = Quaternion.Inverse(rotation) * (origin - boxCenter);
+            Vector3 localDir = Quaternion.Inverse(rotation) * direction;
+
+            localDir = localDir.normalized;
+
+            Vector3 min = -halfExtents;
+            Vector3 max = halfExtents;
 
             float tMin = float.NegativeInfinity;
             float tMax = float.PositiveInfinity;
 
             // X
-            if(Mathf.Abs(direction.x) < 0.0001f)
+            if(Mathf.Abs(localDir.x) < 0.0001f)
             {
-                if (origin.x < min.x || origin.x > max.x) return false;
+                if (localOrigin.x < min.x || localOrigin.x > max.x) return false;
             }
             else
             {
-                float tx1 = (min.x - origin.x) / direction.x;
-                float tx2 = (max.x - origin.x) / direction.x;
+                float tx1 = (min.x - localOrigin.x) / localDir.x;
+                float tx2 = (max.x - localOrigin.x) / localDir.x;
 
                 tMin = Mathf.Max(tMin, Mathf.Min(tx1, tx2));
                 tMax = Mathf.Min(tMax, Mathf.Max(tx1, tx2));
             }
 
             // Y
-            if (Mathf.Abs(direction.y) < 0.0001f)
+            if (Mathf.Abs(localDir.y) < 0.0001f)
             {
-                if (origin.y < min.y || origin.y > max.y)
-                    return false;
+                if (localOrigin.y < min.y || localOrigin.y > max.y) return false;
             }
             else
             {
-                float ty1 = (min.y - origin.y) / direction.y;
-                float ty2 = (max.y - origin.y) / direction.y;
+                float ty1 = (min.y - localOrigin.y) / localDir.y;
+                float ty2 = (max.y - localOrigin.y) / localDir.y;
 
                 tMin = Mathf.Max(tMin, Mathf.Min(ty1, ty2));
                 tMax = Mathf.Min(tMax, Mathf.Max(ty1, ty2));
             }
 
             // Z
-            if (Mathf.Abs(direction.z) < 0.0001f)
+            if (Mathf.Abs(localDir.z) < 0.0001f)
             {
-                if (origin.z < min.z || origin.z > max.z)
-                    return false;
+                if (localOrigin.z < min.z || localOrigin.z > max.z) return false;
             }
             else
             {
-                float tz1 = (min.z - origin.z) / direction.z;
-                float tz2 = (max.z - origin.z) / direction.z;
+                float tz1 = (min.z - localOrigin.z) / localDir.z;
+                float tz2 = (max.z - localOrigin.z) / localDir.z;
 
                 tMin = Mathf.Max(tMin, Mathf.Min(tz1, tz2));
                 tMax = Mathf.Min(tMax, Mathf.Max(tz1, tz2));

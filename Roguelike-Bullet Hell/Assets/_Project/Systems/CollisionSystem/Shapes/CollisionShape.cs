@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Collision
 {
+    [System.Serializable]
     public struct CollisionShape
     {
         public ShapeType Type;

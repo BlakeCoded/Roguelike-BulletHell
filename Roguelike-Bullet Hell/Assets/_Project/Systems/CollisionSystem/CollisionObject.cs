@@ -5,27 +5,31 @@ using UnityEngine;
 
 namespace Collision
 {
+    [System.Serializable]
     public class CollisionObject
     {
-        public CombatEntity Entity;
+        [HideInInspector] public CombatEntity Entity;
 
-        public bool Active = true;
+        [HideInInspector] public bool Active = true;
 
-        public Vector3 Position;
+        [HideInInspector] public Vector3 Position;
+        [HideInInspector] public Quaternion Rotation;
 
         public CollisionLayer Layer;
 
         public CollisionShape CollisionShape;
 
-        public ICollisionHandler CollisionHandler;
+        [HideInInspector] public ICollisionHandler CollisionHandler;
 
-        public readonly List<Vector3Int> OccupiedCells = new();
-        public Vector3Int MinCell;
-        public Vector3Int MaxCell;
+        [HideInInspector] public readonly List<Vector3Int> OccupiedCells = new();
+        [HideInInspector] public Vector3Int MinCell;
+        [HideInInspector] public Vector3Int MaxCell;
 
-        public bool PendingCollision;
+        [HideInInspector] public bool PendingCollision;
+        [HideInInspector] public int LastRayCastId;
     }
 
+    [System.Serializable]
     public enum CollisionLayer
     {
         Player,
