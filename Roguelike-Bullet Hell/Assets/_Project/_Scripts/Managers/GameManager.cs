@@ -92,8 +92,11 @@ public class GameManager : MonoBehaviourSingleton<GameManager>, IBootstrap
     {
         Instance.InternalRegisterCollisionObject(obj);
     }
+
     public static void UnregisterCollisionObject(CollisionObject obj)
     {
+        if(IsQuitting) return;
+
         Instance.InternalUnregisterCollisionObject(obj);
     }
 
@@ -105,6 +108,26 @@ public class GameManager : MonoBehaviourSingleton<GameManager>, IBootstrap
     private void InternalUnregisterCollisionObject(CollisionObject obj)
     {
         CollisionSystem.Unregister(obj);
+    }
+
+    public static void EnableCollisionObject(CollisionObject obj)
+    {
+        Instance.InternalEnableCollisionObject(obj);
+    }
+
+    public static void DisableCollisionObject(CollisionObject obj)
+    {
+        Instance.InternalDisableCollisionObject(obj);
+    }
+
+    private void InternalEnableCollisionObject(CollisionObject obj)
+    {
+        CollisionSystem.Enable(obj);
+    }
+
+    private void InternalDisableCollisionObject(CollisionObject obj)
+    {
+        CollisionSystem.Disable(obj);
     }
 
     #endregion COLLISION_SYSTEM

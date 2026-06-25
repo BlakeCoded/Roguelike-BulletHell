@@ -16,9 +16,6 @@ public class CombatEntity : MonoBehaviour
     // Positioning Data
     public Transform CachedTransform { get; private set; }
 
-    // Team
-    public Team Team { get; set; }
-
     // Health Data
     public HealthComponent Health {  get; private set; }
 
@@ -34,6 +31,9 @@ public class CombatEntity : MonoBehaviour
 
     // Inventory Data
     public InventoryComponent Inventory { get; private set; }
+
+    // Team
+    public Team Team;
 
     protected virtual void Awake()
     {

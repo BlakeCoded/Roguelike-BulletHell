@@ -48,5 +48,32 @@ namespace VisualDebugging
             DrawLine(corners[2], corners[6], color, duration);
             DrawLine(corners[3], corners[7], color, duration);
         }
+
+        public static void DrawCapsuel(Vector3 position, Quaternion rotation, float radius, float height)
+        {
+            float segmentHalfLength = Mathf.Max(0f, height * 0.5f - radius);
+
+            Vector3 up = rotation * Vector3.up;
+            Vector3 right = rotation * Vector3.right;
+            Vector3 forward = rotation * Vector3.forward;
+
+            Vector3 top = position + up * segmentHalfLength;
+            Vector3 bottom = position - up * segmentHalfLength;
+
+            // End spheres
+            Gizmos.DrawWireSphere(top, radius);
+            Gizmos.DrawWireSphere(bottom, radius);
+
+            // Connect spheres
+            Gizmos.DrawLine(top + right * radius, bottom + right * radius);
+            Gizmos.DrawLine(top - right * radius, bottom - right * radius);
+            Gizmos.DrawLine(top + forward * radius, bottom + forward * radius);
+            Gizmos.DrawLine(top - forward * radius, bottom - forward * radius);
+        }
+
+        public static void DrawSphere(Vector3 position, float radius)
+        {
+            Gizmos.DrawWireSphere(position, radius);
+        }
     }
 }

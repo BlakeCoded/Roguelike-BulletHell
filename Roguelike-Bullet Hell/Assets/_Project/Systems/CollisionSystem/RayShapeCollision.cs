@@ -11,14 +11,14 @@ namespace Collision
             switch(shape.Type)
             {
                 case ShapeType.Sphere:
-                    return RaySphere(origin, direction, maxDistance, position, shape.Radius,  out hitDistance);
+                    return RaySphere(origin, direction, maxDistance, position, shape.Radius, out hitDistance);
 
                 case ShapeType.Box:
                     return RayBox(origin, direction, maxDistance, position, rotation, shape.HalfExtents, out hitDistance);
 
                 case ShapeType.Capsule:
-                    hitDistance = 0;
-                    return false;
+                    shape.GetCapsulePoints(position, rotation, out Vector3 pointA, out Vector3 pointB);
+                    return RayCapsule(origin, direction, maxDistance, position, rotation, pointA, pointB, shape.Radius, out hitDistance);
 
                 default:
                     hitDistance = 0;
@@ -117,6 +117,61 @@ namespace Collision
             if (hitDistance < 0f || hitDistance > maxDistance) return false;
 
             return true;
+        }
+
+        private static bool RayCapsule(Vector3 origin, Vector3 direction, float maxDistance, Vector3 capsuleCenter, Quaternion rotation, Vector3 pointA, Vector3 pointB, float radius, out float hitDistance)
+        {
+            hitDistance = 0f;
+
+            float rayT;
+
+            float distanceSqr = RaySegmentDistanceSquared(origin, direction, pointA, pointB, out rayT);
+
+            if (rayT > maxDistance) return false;
+
+            if (distanceSqr > radius * radius) return false;
+
+            hitDistance = rayT;
+            return true;
+        }
+
+        private static float RaySegmentDistanceSquared(Vector3 rayOrigin, Vector3 rayDirection, Vector3 segmentA, Vector3 segmentB, out float rayT)
+        {
+            Vector3 u = rayDirection;
+            Vector3 v = segmentB - segmentA;
+            Vector3 w = rayOrigin - segmentA;
+
+            float a = Vector3.Dot(u, u);
+            float b = Vector3.Dot(u, v);
+            float c = Vector3.Dot(v, v);
+            float d = Vector3.Dot(u, w);
+            float e = Vector3.Dot(v, w);
+
+            float denom = a * c - b * b;
+
+            float s;
+            float t;
+
+            if (Mathf.Abs(denom) < 0.0001f)
+            {
+                s = 0f;
+                t = Mathf.Clamp01(e / c);
+            }
+            else
+            {
+                s = (b * e - c * d) / denom;
+                t = Mathf.Clamp01((a * e - b * d) / denom);
+
+                if (s < 0f)
+                    s = 0f;
+            }
+
+            Vector3 closestRay = rayOrigin + u * s;
+            Vector3 closestSeg = segmentA + v * t;
+
+            rayT = s;
+
+            return (closestRay - closestSeg).sqrMagnitude;
         }
     }
 }

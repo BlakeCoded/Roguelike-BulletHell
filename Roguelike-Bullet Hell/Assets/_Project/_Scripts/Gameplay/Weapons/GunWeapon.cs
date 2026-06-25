@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Collision;
-using Interfaces;
-using Project.Gameplay.Stats;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+using Collision;
 
 namespace Project.Gameplay.Combat
 {
@@ -12,7 +9,7 @@ namespace Project.Gameplay.Combat
     {
         protected override void OnUse(AttackContext attackContext)
         {
-            if(GameManager.Raycast(firePoint.position, firePoint.forward, 100f, Collision.CollisionLayer.Player, out RaycastHitData hit))
+            if(GameManager.Raycast(firePoint.position, firePoint.forward, 100f, CollisionLayer.Player, out RaycastHitData hit))
             {
                 CombatEntity target = hit.CollisionObject.Entity;
 

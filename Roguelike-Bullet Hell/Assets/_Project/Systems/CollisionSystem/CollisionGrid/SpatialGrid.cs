@@ -22,7 +22,7 @@ namespace Collision
 
         public void Add(CollisionObject obj)
         {
-            obj.CollisionShape.GetBounds(obj.Position, out Vector3 min, out Vector3 max);
+            obj.CollisionShape.GetBounds(obj.Position, obj.Rotation, out Vector3 min, out Vector3 max);
 
             Vector3Int minCell = WorldToCell(min);
             Vector3Int maxCell = WorldToCell(max);
@@ -40,7 +40,7 @@ namespace Collision
 
         public void UpdateObject(CollisionObject obj)
         {
-            obj.CollisionShape.GetBounds(obj.Position, out Vector3 min, out Vector3 max);
+            obj.CollisionShape.GetBounds(obj.Position, obj.Rotation, out Vector3 min, out Vector3 max);
 
             Vector3Int minCell = WorldToCell(min);
             Vector3Int maxCell = WorldToCell(max);

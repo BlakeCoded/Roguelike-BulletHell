@@ -8,25 +8,27 @@ namespace Collision
     [System.Serializable]
     public class CollisionObject
     {
+        // CONFIGURATION
+        public CollisionLayer Layer;
+        public CollisionShape CollisionShape;
+
+        // OWNER
         [HideInInspector] public CombatEntity Entity;
+        [HideInInspector] public ICollisionHandler CollisionHandler;
 
-        [HideInInspector] public bool Active = true;
-
+        // TRANSFORM
         [HideInInspector] public Vector3 Position;
         [HideInInspector] public Quaternion Rotation;
 
-        public CollisionLayer Layer;
+        // RUNTIME STATE
+        [HideInInspector] public bool Active = true;
+        [HideInInspector] public bool PendingCollision;
+        [HideInInspector] public int LastRayCastId;
 
-        public CollisionShape CollisionShape;
-
-        [HideInInspector] public ICollisionHandler CollisionHandler;
-
+        // SPATIAL HASH
         [HideInInspector] public readonly List<Vector3Int> OccupiedCells = new();
         [HideInInspector] public Vector3Int MinCell;
         [HideInInspector] public Vector3Int MaxCell;
-
-        [HideInInspector] public bool PendingCollision;
-        [HideInInspector] public int LastRayCastId;
     }
 
     [System.Serializable]

@@ -14,8 +14,10 @@ namespace Collision
         private readonly List<CollisionObject> pendingAdditions = new();
         private readonly List<CollisionObject> pendingRemovals = new();
         private readonly List<CollisionEvent> collisionEvents = new();
-        private readonly HashSet<CollisionObject> testedObjects = new();
+
+        // Raycast
         private int currentRaycastId = int.MinValue;
+        private readonly List<RaycastHitData> raycastHits = new();
 
         public CollisionSystem(float cellSize)
         {
@@ -30,6 +32,18 @@ namespace Collision
         public void Unregister(CollisionObject obj)
         {
             pendingRemovals.Add(obj);
+        }
+
+        public void Enable(CollisionObject obj)
+        {
+            obj.Active = true;
+            grid.Add(obj);
+        }
+
+        public void Disable(CollisionObject obj)
+        {
+            obj.Active = false;
+            grid.Remove(obj);
         }
 
         public void Tick()
@@ -104,11 +118,9 @@ namespace Collision
             {
                 if (!other.Active) continue;
 
-                // Filter
                 if(!CollisionMatrix.CanCollide(obj.Layer, other.Layer)) continue;
 
-                // Shape Check
-                if(ShapeCollision.Test(obj.CollisionShape, obj.Position, other.CollisionShape, other.Position))
+                if(ShapeCollision.Test(obj.CollisionShape, obj.Position, obj.Rotation, other.CollisionShape, other.Position, other.Rotation))
                 {
                     collisionEvents.Add(new CollisionEvent(obj, other));
                     obj.PendingCollision = true;
@@ -121,7 +133,6 @@ namespace Collision
         public bool Raycast(Vector3 origin, Vector3 direction, float distance, CollisionLayer collisionLayer, out RaycastHitData hit)
         {
             hit = default;
-            testedObjects.Clear();
             currentRaycastId++;
 
             bool hitFound = false;
@@ -150,8 +161,9 @@ namespace Collision
                         {
                             closestObject = other;
                             closestDistance = hitDistance;
-                            hitFound = true;
                         }
+
+                        hitFound = true;
                     }
                 }
 
@@ -173,33 +185,38 @@ namespace Collision
 
         public bool RaycastAll(Vector3 origin, Vector3 direction, float distance, CollisionLayer collisionLayer, out List<RaycastHitData> hits)
         {
-            hits = default;
+            raycastHits.Clear();
+
+            currentRaycastId++;
 
             bool foundHit = false;
-            float closestDistance = distance;
 
             grid.GetAllObjectsAlongRay(origin, direction, distance, results);
 
             foreach (CollisionObject other in results)
             {
+                if (other.LastRayCastId == currentRaycastId) continue;
+
+                other.LastRayCastId = currentRaycastId;
+
                 if (!other.Active) continue;
 
                 if (!CollisionMatrix.CanCollide(collisionLayer, other.Layer)) continue;
 
                 if (RayShapeCollision.Test(origin, direction, distance, other.Position, other.Rotation, other.CollisionShape, out float hitDistance))
                 {
-                    RaycastHitData hit = new RaycastHitData
+                    raycastHits.Add(new RaycastHitData
                     {
                         CollisionObject = other,
                         HitDistance = hitDistance,
                         HitPoint = origin + direction * hitDistance
-                    };
-
-                    hits.Add(hit);
+                    });
 
                     foundHit = true;
                 }
             }
+
+            hits = raycastHits;
 
             return foundHit;
         }

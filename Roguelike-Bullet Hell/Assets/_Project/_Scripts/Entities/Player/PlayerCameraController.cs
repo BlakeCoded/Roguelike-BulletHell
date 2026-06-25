@@ -1,5 +1,6 @@
 using Collision;
 using UnityEngine;
+using System.Collections.Generic;
 using static Helper;
 
 namespace Project.Player
@@ -40,6 +41,11 @@ namespace Project.Player
             RotateCameraAroundTarget(inputVector);
 
             UpdateWeaponAim();
+
+            //if(GameManager.Raycast(mainCamera.transform.position, mainCamera.transform.forward, 50f, CollisionLayer.Player, out RaycastHitData hit))
+            //{
+            //    Debug.Log($"Hit: {hit.CollisionObject.Entity.name}");
+            //}
         }
 
         public void RotateCameraAroundTarget(Vector2 inputVector)
@@ -121,22 +127,11 @@ namespace Project.Player
             currentAimPoint = Vector3.Lerp(currentAimPoint, targetAimPoint, aimSmoothing * GameTime.DeltaTime);
 
             Vector3 direction = currentAimPoint - firePosition.position;
-            //Vector3 direction = targetAimPoint - firePosition.position;
 
             if (direction.sqrMagnitude < 0.001f)
                 return;
 
             firePosition.rotation = Quaternion.LookRotation(direction);
-        }
-
-        Vector3 hitPoint;
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(mainCamera.transform.position, hitPoint);
-
-            Gizmos.DrawLine(mainCamera.transform.position, mainCamera.transform.forward * 50f);
         }
     }
 }

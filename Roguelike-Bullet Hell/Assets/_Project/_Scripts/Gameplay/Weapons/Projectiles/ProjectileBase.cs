@@ -37,6 +37,8 @@ public abstract class ProjectileBase : MonoBehaviour, IProjectile, IPoolable, IC
         };
 
         CollisionObject.CollisionShape.Type = ShapeType.Sphere;
+
+        GameManager.RegisterCollisionObject(CollisionObject);
     }
 
     public void Initialize(AttackContext context, float projectileSpeed, float projectileSize)
@@ -101,15 +103,20 @@ public abstract class ProjectileBase : MonoBehaviour, IProjectile, IPoolable, IC
         CollisionObject.Active = true;
         CollisionObject.Position = cachedTransform.position;
 
-        GameManager.RegisterCollisionObject(CollisionObject);
+        GameManager.EnableCollisionObject(CollisionObject);
         ProjectileSystem.Register(this);
     }
 
     public virtual void OnDespawn()
     {
         CollisionObject.Active = false;
-        GameManager.UnregisterCollisionObject(CollisionObject);
+        GameManager.DisableCollisionObject(CollisionObject);
         ProjectileSystem.MarkForRemoval(this);
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.UnregisterCollisionObject(CollisionObject);
     }
 
 

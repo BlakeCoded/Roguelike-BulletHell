@@ -18,6 +18,8 @@ public class PhysicalDamageOnHitEffect : IOnHitEffect
         float bonusDamage = result.DamageDealt * PERCENTAGE_DAMAGE;
         float totalDamage = bonusDamage * stacks;
 
+        if(totalDamage < 1f) totalDamage = 1f;
+
         DamageContext damageContext = DamageContext.CreateSimpleDamageContext(result.CombatContext, totalDamage, DamageType.Physical);
 
         DamageResolver.ProcessDamage(damageContext);
