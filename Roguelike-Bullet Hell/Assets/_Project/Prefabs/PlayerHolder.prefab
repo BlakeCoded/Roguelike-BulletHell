@@ -317,6 +317,7 @@ GameObject:
   - component: {fileID: 575946741546719850}
   - component: {fileID: 469644935161061101}
   - component: {fileID: 7526719833478017232}
+  - component: {fileID: 1631451670966314064}
   m_Layer: 0
   m_Name: PlayerBody
   m_TagString: Untagged
@@ -441,8 +442,8 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 84
-  m_CollisionDetection: 1
+  m_Constraints: 112
+  m_CollisionDetection: 2
 --- !u!114 &7526719833478017232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -455,6 +456,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b725540423ae1341a78ff6339de360b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1631451670966314064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4108415193161724354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3ca374ac99baed4fb0fe255b00781c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Layer: 0
+  ShapeData:
+    Type: 1
+    Radius: 0.5
+    HalfExtents: {x: 0.5, y: 0.5, z: 0.5}
+    Height: 2
 --- !u!1 &4218669743524969992
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,7 +562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b255e0f5708dca459cc54767395a73e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Team: 0
+  team: 0
 --- !u!114 &648214006152370690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -601,7 +620,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPosition: {fileID: 3011635977435228245}
   weaponFirePoint: {fileID: 5553140454713769125}
-  StartingWeapon: {fileID: 11400000, guid: 59f8eb8c304d9e94eac7241b0a38d2df, type: 2}
+  StartingWeapon: {fileID: 11400000, guid: e3b4963063c569f4e96958bfe9be1889, type: 2}
 --- !u!114 &4277796254581021239
 MonoBehaviour:
   m_ObjectHideFlags: 0

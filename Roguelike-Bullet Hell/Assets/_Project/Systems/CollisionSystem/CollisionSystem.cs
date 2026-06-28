@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Project.Gameplay.Combat;
-using System.Transactions;
 
 namespace Collision
 {
@@ -57,7 +55,7 @@ namespace Collision
 
         private void UpdateObjects()
         {
-            foreach (CollisionObject obj in collisionObjects)
+            foreach(CollisionObject obj in collisionObjects)
             {
                 grid.UpdateObject(obj);
             }
@@ -65,7 +63,7 @@ namespace Collision
 
         private void ProcessRemovals()
         {
-            foreach (CollisionObject obj in pendingRemovals)
+            foreach(CollisionObject obj in pendingRemovals)
             {
                 collisionObjects.Remove(obj);
                 grid.Remove(obj);
@@ -89,7 +87,7 @@ namespace Collision
         {
             foreach(CollisionEvent collision in collisionEvents)
             {
-                collision.A.CollisionHandler?.OnCollision(collision.B);
+                collision.A.CollisionHandler?.OnHit(collision.B);
             }
 
             collisionEvents.Clear();
@@ -102,7 +100,7 @@ namespace Collision
 
         private void CheckCollisions()
         {
-            foreach (CollisionObject obj in collisionObjects)
+            foreach(CollisionObject obj in collisionObjects)
             {
                 CheckObject(obj);
             }
@@ -116,7 +114,7 @@ namespace Collision
 
             foreach(CollisionObject other in results)
             {
-                if (!other.Active) continue;
+                if(!other.Active) continue;
 
                 if(!CollisionMatrix.CanCollide(obj.Layer, other.Layer)) continue;
 
@@ -126,7 +124,7 @@ namespace Collision
                     obj.PendingCollision = true;
                 }
 
-                if (obj.PendingCollision) break;
+                if(obj.PendingCollision) break;
             }
         }
 

@@ -17,6 +17,7 @@ namespace Collision
         [HideInInspector] public ICollisionHandler CollisionHandler;
 
         // TRANSFORM
+        [HideInInspector] public Transform Transform;
         [HideInInspector] public Vector3 Position;
         [HideInInspector] public Quaternion Rotation;
 

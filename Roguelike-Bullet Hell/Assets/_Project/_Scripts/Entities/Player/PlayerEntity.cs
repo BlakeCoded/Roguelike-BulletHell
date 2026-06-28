@@ -1,4 +1,7 @@
 using Project.Gameplay.Combat;
+using Collision;
+using Interfaces;
+using UnityEngine;
 
 namespace Project.Player
 {
@@ -12,11 +15,14 @@ namespace Project.Player
         {
             base.Awake();
 
-            Team = Team.Player;
-
             Input = GetComponent<PlayerInput>();
             CameraController = GetComponent<PlayerCameraController>();
             PlayerWeapons = GetComponent<PlayerWeaponHolder>();
+        }
+
+        protected override void Start()
+        {
+            base.Start();
         }
 
         private void Update()
@@ -25,12 +31,12 @@ namespace Project.Player
 
             Movement.Move(Input.MoveInput);
 
+            SyncCollisionTransform();
+
             if (Input.FirePressed)
             {
                 PlayerWeapons.Attack();
             }
-
-            
         }
 
         private void LateUpdate()
@@ -47,6 +53,11 @@ namespace Project.Player
         void OnDeath()
         {
             Movement.CanMove = false;
+        }
+
+        public override void OnHit(CollisionObject other)
+        {
+            
         }
 
         private void OnEnable()

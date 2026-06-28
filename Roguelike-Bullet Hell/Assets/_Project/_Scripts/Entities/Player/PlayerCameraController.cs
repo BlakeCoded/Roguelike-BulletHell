@@ -42,7 +42,7 @@ namespace Project.Player
 
             UpdateWeaponAim();
 
-            //if(GameManager.Raycast(mainCamera.transform.position, mainCamera.transform.forward, 50f, CollisionLayer.Player, out RaycastHitData hit))
+            //if (GameManager.Raycast(mainCamera.transform.position, mainCamera.transform.forward, 50f, CollisionLayer.Player, out RaycastHitData hit))
             //{
             //    Debug.Log($"Hit: {hit.CollisionObject.Entity.name}");
             //}

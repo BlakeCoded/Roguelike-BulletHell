@@ -1,9 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Collision
 {
@@ -57,24 +53,28 @@ namespace Collision
             results.Clear();
             NoDuplicateObjects.Clear();
 
-            foreach (Vector3Int occupiedCell in obj.OccupiedCells)
-            {
-                foreach (Vector3Int offset in NeighbourOffsets)
-                {
-                    Vector3Int neighbourCell = occupiedCell + offset;
+            obj.CollisionShape.GetBounds(obj.Position, obj.Rotation, out var min, out var max);
 
-                    if (!cells.TryGetValue(neighbourCell, out var list))
-                        continue;
+            Vector3Int minCell = WorldToCell(min);
+            Vector3Int maxCell = WorldToCell(max);
 
-                    foreach (CollisionObject other in list)
+            for (int x = minCell.x; x <= maxCell.x; x++)
+                for (int y = minCell.y; y <= maxCell.y; y++)
+                    for (int z = minCell.z; z <= maxCell.z; z++)
                     {
-                        if (other == obj)
+                        Vector3Int cell = new(x, y, z);
+
+                        if (!cells.TryGetValue(cell, out var list))
                             continue;
 
-                        NoDuplicateObjects.Add(other);
+                        foreach (var other in list)
+                        {
+                            if (other == obj)
+                                continue;
+
+                            NoDuplicateObjects.Add(other);
+                        }
                     }
-                }
-            }
 
             results.AddRange(NoDuplicateObjects);
         }
@@ -226,26 +226,5 @@ namespace Collision
             }
             obj.OccupiedCells.AddRange(cellBuffer);
         }
-
-        private static readonly Vector3Int[] NeighbourOffsets =
-        {
-            new(-1,-1,-1), new(0,-1,-1), new(1,-1,-1),
-
-            new(-1,0,-1), new(0,0,-1), new(1,0,-1),
-
-            new(-1,1,-1), new(0,1,-1), new(1,1,-1),
-
-            new(-1,-1,0), new(0,-1,0), new(1,-1,0),
-
-            new(-1,0,0), new(0,0,0), new(1,0,0),
-
-            new(-1,1,0), new(0,1,0), new(1,1,0),
-
-            new(-1,-1,1), new(0,-1,1), new(1,-1,1),
-
-            new(-1,0,1), new(0,0,1), new(1,0,1),
-
-            new(-1,1,1), new(0,1,1), new(1,1,1)
-        };
     }
 }

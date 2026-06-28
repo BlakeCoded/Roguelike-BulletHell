@@ -78,7 +78,7 @@ public abstract class ProjectileBase : MonoBehaviour, IProjectile, IPoolable, IC
 
     protected abstract void HandleMovement();
 
-    public void OnCollision(CollisionObject other)
+    public void OnHit(CollisionObject other)
     {
         DamageContext damageContext = DamageResolver.CreateDamageContext(
             AttackContext,
@@ -127,4 +127,6 @@ public abstract class ProjectileBase : MonoBehaviour, IProjectile, IPoolable, IC
         Gizmos.color = Color.magenta;
         Gizmos.DrawSphere(cachedTransform.position, cachedTransform.localScale.x);
     }
+
+    
 }

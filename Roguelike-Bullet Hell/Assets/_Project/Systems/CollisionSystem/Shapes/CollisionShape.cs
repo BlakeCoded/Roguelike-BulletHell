@@ -9,7 +9,7 @@ namespace Collision
     {
         public ShapeType Type;
 
-        public float Radius;        // sphere
+        public float Radius;      // sphere
         public Vector3 HalfExtents; // box
         public float Height;        // capsule
 
@@ -31,11 +31,17 @@ namespace Collision
                     Vector3 forward = rotation * Vector3.forward;
 
                     Vector3 worldExtents = new Vector3(
-                        Mathf.Abs(right.x) * HalfExtents.x + Mathf.Abs(up.x) * HalfExtents.y + Mathf.Abs(forward.x) + HalfExtents.z,
+                        Mathf.Abs(right.x) * HalfExtents.x +
+                        Mathf.Abs(up.x) * HalfExtents.y +
+                        Mathf.Abs(forward.x) * HalfExtents.z,
 
-                        Mathf.Abs(right.y) * HalfExtents.x + Mathf.Abs(up.y) * HalfExtents.y + Mathf.Abs(forward.y) * HalfExtents.z,
+                        Mathf.Abs(right.y) * HalfExtents.x +
+                        Mathf.Abs(up.y) * HalfExtents.y +
+                        Mathf.Abs(forward.y) * HalfExtents.z,
 
-                        Mathf.Abs(right.z) * HalfExtents.x + Mathf.Abs(up.z) * HalfExtents.y + Mathf.Abs(forward.z) * HalfExtents.z);
+                        Mathf.Abs(right.z) * HalfExtents.x +
+                        Mathf.Abs(up.z) * HalfExtents.y +
+                        Mathf.Abs(forward.z) * HalfExtents.z);
 
                     min = position - worldExtents;
                     max = position + worldExtents;

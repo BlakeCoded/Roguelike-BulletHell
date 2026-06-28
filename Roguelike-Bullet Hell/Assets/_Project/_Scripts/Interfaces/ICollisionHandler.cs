@@ -7,6 +7,6 @@ namespace Interfaces
 {
     public interface ICollisionHandler
     {
-        void OnCollision(CollisionObject other);
+        void OnHit(CollisionObject other);
     }
 }
