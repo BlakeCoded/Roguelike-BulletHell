@@ -59,7 +59,6 @@ public abstract class CombatEntity : MonoBehaviour, ICollisionHandler
         Debug.Assert(Movement != null, $"{name} requires a MovementComponentBase");
 
         InitializeCollisionObjects();
-        
     }
 
     protected virtual void Start()
@@ -77,7 +76,7 @@ public abstract class CombatEntity : MonoBehaviour, ICollisionHandler
 
         for (int i = 0; i < collisionObjects.Length; i++)
         {
-            HitBoxes[i] = collisionObjects[i].BuildCollisionObject(this);
+            HitBoxes[i] = collisionObjects[i].BuildCollisionObject(this, this);
         }
     }
 
@@ -85,7 +84,7 @@ public abstract class CombatEntity : MonoBehaviour, ICollisionHandler
     {
         foreach (var data in HitBoxes)
         {
-            GameManager.RegisterCollisionObject(data);
+            CollisionSystem.RegisterCollisionObject(data);
         }
     }
 

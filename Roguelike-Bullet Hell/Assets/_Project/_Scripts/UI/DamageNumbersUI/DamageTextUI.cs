@@ -9,25 +9,24 @@ using static Helper;
 
 namespace Project.UI
 {
-    public class DamageTextUI : MonoBehaviour, IPoolable
+    public class DamageTextUI : MonoBehaviour, IPoolable, ITickable
     {
         [SerializeField] private TMP_Text text;
         [SerializeField] private float lifeTime;
         [SerializeField] private Color normalColour;
         [SerializeField] private Color critColour;
 
+        public int Index { get; private set; }
         public bool IsReleased { get; private set; }
 
         private float timer;
         private Transform cachedTransform;
         private Vector3 position;
 
-        private float maxSize = 1f;
+        private float maxSize = 1.2f;
         private float minSize = 0.4f;
         private float maxDistance = 75f;
         private float distance;
-
-        private float displayDamage;
 
         private void Awake()
         {
@@ -54,24 +53,41 @@ namespace Project.UI
             }
         }
 
-        private void Update()
+        public void Tick(float deltaTime)
         {
-            position += 2 * GameTime.DeltaTime * Vector3.up;
+            this.position += 2 * GameTime.DeltaTime * Vector3.up;
 
             ScaleTextSizeFromDistance();
 
-            cachedTransform.position = MainCamera.WorldToScreenPoint(this.position);
+            Vector3 screenPos = MainCamera.WorldToScreenPoint(this.position);
+
+            bool visible =
+                screenPos.x >= 0f && screenPos.x <= Screen.width &&
+                screenPos.y >= 0f && screenPos.y <= Screen.height &&
+                screenPos.z > 0f;
+
+            text.alpha = visible ? 1f : 0f;
+
+            if (visible)
+            {
+                cachedTransform.position = screenPos;
+            }
 
             timer += GameTime.DeltaTime;
 
-            if(timer > lifeTime)
+            if (timer >= lifeTime)
             {
-                if(!IsReleased)
+                if (!IsReleased)
                 {
                     ObjectPoolManager.Release(gameObject);
                     IsReleased = true;
                 }
             }
+        }
+
+        public void SetIndex(int index)
+        {
+            Index = index;
         }
 
         private void ScaleTextSizeFromDistance()
@@ -93,7 +109,7 @@ namespace Project.UI
 
         public void OnDespawn()
         {
-            
+            GameTextManager.MarkForRemoval(this);
         }
     }
 }

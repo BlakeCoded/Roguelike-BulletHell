@@ -13,7 +13,7 @@ namespace Collision
         public CollisionLayer Layer;
         public CollisionShapeData ShapeData = CollisionShapeData.Default;
 
-        public CollisionObject BuildCollisionObject(CombatEntity entity)
+        public CollisionObject BuildCollisionObject(CombatEntity entity, ICollisionHandler collisionHandler)
         {
             Transform t = transform;
 
@@ -23,7 +23,7 @@ namespace Collision
                 Layer = Layer,
                 CollisionShape = ShapeData.Build(t),
                 Entity = entity,
-                CollisionHandler = entity,
+                CollisionHandler = collisionHandler,
                 Transform = t,
                 Position = t.position,
                 Rotation = t.rotation,

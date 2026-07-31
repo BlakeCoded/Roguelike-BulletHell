@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Collision
 {
-    public class SpatialGrid
+    public class SpatialGrid // Next optimise occupying cells to remove and add changed cells not all cells.
     {
         private readonly Dictionary<Vector3Int, List<CollisionObject>> cells = new();
         private readonly List<Vector3Int> cellBuffer = new();
@@ -14,6 +14,13 @@ namespace Collision
         public SpatialGrid(float cellSize)
         {
             this.CELLSIZE = cellSize;
+        }
+
+        public void ResetSpatialGrid()
+        {
+            NoDuplicateObjects.Clear();
+            cellBuffer.Clear();
+            cells.Clear();
         }
 
         public void Add(CollisionObject obj)

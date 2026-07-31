@@ -23,6 +23,6 @@ public class TestEnemyEntity : CombatEntity
 
     public override void OnHit(CollisionObject other)
     {
-        Debug.Log(name);
+        
     }
 }

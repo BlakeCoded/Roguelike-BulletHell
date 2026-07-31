@@ -1,25 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
+using Interfaces;
 using UnityEngine;
 
 namespace Collision
 {
-    public class CollisionSystem
+    public class CollisionWorld : ITickable
     {
         private readonly SpatialGrid grid;
-        private readonly List<CollisionObject> results = new();
         private readonly List<CollisionObject> collisionObjects = new();
         private readonly List<CollisionObject> pendingAdditions = new();
         private readonly List<CollisionObject> pendingRemovals = new();
+
+        private readonly List<CollisionObject> results = new();
         private readonly List<CollisionEvent> collisionEvents = new();
 
         // Raycast
         private int currentRaycastId = int.MinValue;
         private readonly List<RaycastHitData> raycastHits = new();
 
-        public CollisionSystem(float cellSize)
+        public CollisionWorld(float cellSize)
         {
             this.grid = new SpatialGrid(cellSize);
+        }
+
+        public void ResetCollisionWorld()
+        {
+            pendingAdditions.Clear();
+
+            for(int i = collisionObjects.Count - 1; i >= 0; i--)
+            {
+                pendingRemovals.Add(collisionObjects[i]);
+            }
+
+            ProcessRemovals();
+
+            grid.ResetSpatialGrid();
         }
 
         public void Register(CollisionObject obj)
@@ -35,6 +51,8 @@ namespace Collision
         public void Enable(CollisionObject obj)
         {
             obj.Active = true;
+            obj.Position = obj.Transform.position;
+            obj.Rotation = obj.Transform.rotation;
             grid.Add(obj);
         }
 
@@ -44,7 +62,7 @@ namespace Collision
             grid.Remove(obj);
         }
 
-        public void Tick()
+        public void Tick(float deltaTime)
         {
             UpdateObjects();
             CheckCollisions();
@@ -92,7 +110,7 @@ namespace Collision
 
             collisionEvents.Clear();
 
-            foreach (var obj in collisionObjects)
+            foreach (CollisionObject obj in collisionObjects)
             {
                 obj.PendingCollision = false;
             }

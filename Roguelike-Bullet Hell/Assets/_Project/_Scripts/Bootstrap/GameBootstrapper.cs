@@ -12,9 +12,9 @@ public class GameBootstrapper : MonoBehaviour
 
     private void Awake()
     {
-        foreach(IBootstrap manager in bootManagers)
+        foreach (IBootstrap manager in bootManagers)
         {
-                manager.Initialize();
+            manager.Initialize();
         }
     }
 }

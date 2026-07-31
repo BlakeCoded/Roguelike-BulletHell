@@ -9,7 +9,7 @@ namespace Project.Gameplay.Combat
     {
         protected override void OnUse(AttackContext attackContext)
         {
-            if(GameManager.Raycast(firePoint.position, firePoint.forward, 100f, CollisionLayer.Player, out RaycastHitData hit))
+            if(CollisionSystem.Raycast(firePoint.position, firePoint.forward, 100f, CollisionLayer.Player, out RaycastHitData hit))
             {
                 CombatEntity target = hit.CollisionObject.Entity;
 

@@ -5,6 +5,7 @@ using Project.Gameplay.Pooling;
 using UnityEngine;
 using UnityEngine.ProBuilder.Shapes;
 
+[RequireComponent(typeof(CollisionObjectComponent))]
 public abstract class ProjectileBase : MonoBehaviour, IProjectile, IPoolable, ICollisionHandler
 {
     protected Transform cachedTransform;
@@ -29,16 +30,9 @@ public abstract class ProjectileBase : MonoBehaviour, IProjectile, IPoolable, IC
         cachedTransform = transform;
         baseScale = cachedTransform.localScale;
 
-        CollisionObject = new CollisionObject
-        {
-            CollisionHandler = this,
-            CollisionShape = new CollisionShape(),
-            Layer = CollisionLayer.PlayerProjectiles
-        };
+        CollisionObject = GetComponent<CollisionObjectComponent>().BuildCollisionObject(null, this);
 
-        CollisionObject.CollisionShape.Type = ShapeType.Sphere;
-
-        GameManager.RegisterCollisionObject(CollisionObject);
+        CollisionSystem.RegisterCollisionObject(CollisionObject);
     }
 
     public void Initialize(AttackContext context, float projectileSpeed, float projectileSize)
@@ -78,6 +72,15 @@ public abstract class ProjectileBase : MonoBehaviour, IProjectile, IPoolable, IC
 
     protected abstract void HandleMovement();
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!IsReleased)
+        {
+            ObjectPoolManager.Release(gameObject);
+            IsReleased = true;
+        }
+    }
+
     public void OnHit(CollisionObject other)
     {
         DamageContext damageContext = DamageResolver.CreateDamageContext(
@@ -90,7 +93,6 @@ public abstract class ProjectileBase : MonoBehaviour, IProjectile, IPoolable, IC
 
         if(!IsReleased)
         {
-            CollisionObject.Active = false;
             ObjectPoolManager.Release(gameObject);
             IsReleased = true;
         }
@@ -100,33 +102,20 @@ public abstract class ProjectileBase : MonoBehaviour, IProjectile, IPoolable, IC
     {
         timer = 0;
         IsReleased = false;
-        CollisionObject.Active = true;
-        CollisionObject.Position = cachedTransform.position;
 
-        GameManager.EnableCollisionObject(CollisionObject);
+        CollisionSystem.EnableCollisionObject(CollisionObject);
         ProjectileSystem.Register(this);
     }
 
     public virtual void OnDespawn()
     {
-        CollisionObject.Active = false;
-        GameManager.DisableCollisionObject(CollisionObject);
+        CollisionSystem.DisableCollisionObject(CollisionObject);
         ProjectileSystem.MarkForRemoval(this);
     }
 
     private void OnDestroy()
     {
-        GameManager.UnregisterCollisionObject(CollisionObject);
+        CollisionSystem.UnregisterCollisionObject(CollisionObject);
+        ProjectileSystem.MarkForRemoval(this);
     }
-
-
-    private void OnDrawGizmos()
-    {
-        if(CollisionObject == null) return;
-
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawSphere(cachedTransform.position, cachedTransform.localScale.x);
-    }
-
-    
 }
